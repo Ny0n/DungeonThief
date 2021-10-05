@@ -25,12 +25,26 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+<<<<<<< HEAD
 	float horizontal = FInputAxisBinding("Horizontal_Axis").AxisValue;
+=======
+
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override; 
+
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+
+	void TurnAtRate(float Rate);
+	void LookUpAtRate(float Rate);
+
+	float TurnRate;
+	float LookRate;
+
+>>>>>>> 304a1d3fd68ccafbbb9a0cbb39ba86b746b5b663
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
