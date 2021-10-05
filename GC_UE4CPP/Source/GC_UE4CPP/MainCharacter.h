@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "HoloLens/AllowWindowsPlatformTypes.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -25,9 +24,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-<<<<<<< HEAD
 	float horizontal = FInputAxisBinding("Horizontal_Axis").AxisValue;
-=======
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override; 
 
@@ -40,7 +37,6 @@ protected:
 	float TurnRate;
 	float LookRate;
 
->>>>>>> 304a1d3fd68ccafbbb9a0cbb39ba86b746b5b663
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
