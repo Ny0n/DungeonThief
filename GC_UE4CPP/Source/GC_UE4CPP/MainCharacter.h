@@ -40,6 +40,7 @@ protected:
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
 	void ZoomInOut(float Value);
+	void ButtonPressed(float Value);
 
 public:	
 	// Called every frame

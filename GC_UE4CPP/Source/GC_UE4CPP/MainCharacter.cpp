@@ -3,6 +3,7 @@
 
 #include "MainCharacter.h"
 
+#include "Knight_Animation.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -49,7 +50,6 @@ void AMainCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString(TEXT("TEST")));
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
@@ -58,7 +58,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
-
+	PlayerInputComponent->BindAxis("Animation", this, &AMainCharacter::ButtonPressed);
 }
 
 void AMainCharacter::MoveForward(float Value)
@@ -96,4 +96,13 @@ void AMainCharacter::ZoomInOut(float Value)
 {
 	if (Value != 0)
 		BoomArm->TargetArmLength = UKismetMathLibrary::FClamp(BoomArm->TargetArmLength + -Value * ZoomRate, 200, 800);
+}
+
+void AMainCharacter::ButtonPressed(float Value)
+{
+	if (Value != 0)
+	{
+		UKnight_Animation* KnightAnim = Cast<UKnight_Animation>(GetMesh()->GetAnimInstance());
+		if (IsValid(KnightAnim)) KnightAnim->PlayVictoryAnimation();
+	}
 }
