@@ -2,9 +2,11 @@
 
 
 #include "MainCharacter.h"
+
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -14,7 +16,7 @@ AMainCharacter::AMainCharacter()
 
 	BoomArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera boom"));
 	BoomArm->SetupAttachment(RootComponent);
-	BoomArm->TargetArmLength = 300.f;
+	BoomArm->TargetArmLength = 400;
 	BoomArm->bUsePawnControlRotation = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -27,10 +29,6 @@ AMainCharacter::AMainCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
-
-	TurnRate = 45;
-	LookRate = 45; 
-
 }
 
 // Called when the game starts or when spawned
@@ -45,12 +43,13 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString(TEXT("TEST")));
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
@@ -58,11 +57,13 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookUpAtRate);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
 
 }
 
 void AMainCharacter::MoveForward(float Value)
 {
+	
 	if (Controller != NULL && Value != 0.0) {
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator Yaw(0, Rotation.Yaw, 0);
@@ -83,11 +84,16 @@ void AMainCharacter::MoveRight(float Value)
 
 void AMainCharacter::TurnAtRate(float Rate)
 {
-	AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * TurnRate);
+	AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
 }
 
 void AMainCharacter::LookUpAtRate(float Rate)
 {
-	AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * TurnRate);
+	AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
 }
 
+void AMainCharacter::ZoomInOut(float Value)
+{
+	if (Value != 0)
+		BoomArm->TargetArmLength = UKismetMathLibrary::FClamp(BoomArm->TargetArmLength + -Value * ZoomRate, 200, 800);
+}

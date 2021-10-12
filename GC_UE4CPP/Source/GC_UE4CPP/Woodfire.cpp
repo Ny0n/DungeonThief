@@ -29,6 +29,6 @@ void AWoodfire::BeginPlay()
 void AWoodfire::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 

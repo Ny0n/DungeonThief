@@ -17,6 +17,12 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 		class UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+	float CameraTurnRate = 45;
+
+	UPROPERTY(EditAnywhere)
+	float ZoomRate = 25;
+
 public:
 	// Sets default values for this character's properties
 	AMainCharacter();
@@ -33,9 +39,7 @@ protected:
 
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-
-	float TurnRate;
-	float LookRate;
+	void ZoomInOut(float Value);
 
 public:	
 	// Called every frame
