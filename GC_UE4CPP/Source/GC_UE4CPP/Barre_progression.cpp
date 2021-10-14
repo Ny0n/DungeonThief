@@ -9,9 +9,12 @@
 void UBarre_progression::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
 }
 
 void UBarre_progression::UpdateProgressBarre(int val)
 {
-	progressBarre-> Percent = 50;
+	progressBarre-> SetPercent(val);
 }
+
+
