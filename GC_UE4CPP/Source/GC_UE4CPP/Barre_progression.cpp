@@ -9,17 +9,9 @@
 void UBarre_progression::NativeConstruct()
 {
 	Super::NativeConstruct();
-
-	ButtonBarre -> OnClicked.AddUniqueDynamic(this , &UBarre_progression::OnGenerateButtonCliked);
 }
 
-void UBarre_progression::OnGenerateButtonCliked()
+void UBarre_progression::UpdateProgressBarre(int val)
 {
-	LBarre = LBarre+25;
-	if (LBarre >100)
-	{
-		LBarre=1;
-	}
-	progressBarre-> Percent  = LBarre;
-	
+	progressBarre-> Percent = 50;
 }

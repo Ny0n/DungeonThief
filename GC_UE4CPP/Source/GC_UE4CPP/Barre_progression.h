@@ -15,23 +15,16 @@ class GC_UE4CPP_API UBarre_progression : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY( meta = (BindWidget))
-	class UTextBlock * BarreLabel;	
-
-	UPROPERTY( meta = (BindWidget))
-		class UButton * ButtonBarre;
-
-	UPROPERTY(  meta = (BindWidget))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "progresBarre",  meta = (BindWidget))
 		class  UProgressBar * progressBarre;
 
 	
 	UFUNCTION()
-			void OnGenerateButtonCliked();
+			void UpdateProgressBarre(int val);
 	
 	void NativeConstruct() override;
 
-private:
-	int32 LBarre = 1;
+
 
 	
 };
