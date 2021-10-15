@@ -10,6 +10,8 @@
 void Acreation_interface::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("test"));
+
 	if (Barre_ProgressionClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("I just started running"));
