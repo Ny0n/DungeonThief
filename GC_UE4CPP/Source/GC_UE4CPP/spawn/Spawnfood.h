@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "spawn_food.generated.h"
+#include "SpawnFood.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API Aspawn_food : public AActor
+class GC_UE4CPP_API ASpawnFood : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	Aspawn_food();
+	ASpawnFood();
 
 protected:
 	// Called when the game starts or when spawned

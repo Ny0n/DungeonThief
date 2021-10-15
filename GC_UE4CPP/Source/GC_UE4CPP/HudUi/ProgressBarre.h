@@ -4,19 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Barre_progression.generated.h"
+#include "ProgressBarre.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBarre_progression : public UUserWidget
+class GC_UE4CPP_API UProgressBarre : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
 	UPROPERTY(EditAnywhere,  meta = (BindWidget))
-	class  UProgressBar * progressBarre;
+	class  UProgressBar * ProgressBarre;
+
 	
 	
 	UFUNCTION()

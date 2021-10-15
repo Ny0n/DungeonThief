@@ -1,20 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Barre_progression.h"
+#include "ProgressBarre.h"
 
 #include "Components/Button.h"
 #include "Components/ProgressBar.h"
 
-void UBarre_progression::NativeConstruct()
+void UProgressBarre::NativeConstruct()
 {
 	Super::NativeConstruct();
 	
 }
 
-void UBarre_progression::UpdateProgressBarre(int val)
+void UProgressBarre::UpdateProgressBarre(int val)
 {
-	progressBarre-> SetPercent(val);
+	ProgressBarre-> SetPercent(val);
 }
 
 

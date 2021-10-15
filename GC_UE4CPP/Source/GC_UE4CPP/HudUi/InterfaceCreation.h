@@ -1,17 +1,17 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "Barre_progression.h"
+#include "ProgressBarre.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
-#include "creation_interface.generated.h"
+#include "InterfaceCreation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API Acreation_interface : public AHUD
+class GC_UE4CPP_API AInterfaceCreation : public AHUD
 {
 	
 	GENERATED_BODY()
@@ -22,9 +22,9 @@ public:
 	
 
 	UPROPERTY(EditDefaultsOnly,Category= "widgets")
-	TSubclassOf<UUserWidget>Barre_ProgressionClass;
+	TSubclassOf<UUserWidget>ProgressBarreClass;
 	
-	UBarre_progression * Barre_Winget;
+	UProgressBarre * Barre_Winget;
 	
 	
 };

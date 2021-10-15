@@ -1,21 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "creation_interface.h"
+#include "InterfaceCreation.h"
 
 #include "Blueprint/UserWidget.h"
 
 
 
-void Acreation_interface::BeginPlay()
+void AInterfaceCreation::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("test"));
 
-	if (Barre_ProgressionClass)
+	if (ProgressBarreClass)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("I just started running"));
-		Barre_Winget = CreateWidget<UBarre_progression>(GetWorld(),Barre_ProgressionClass);
+		Barre_Winget = CreateWidget<UProgressBarre>(GetWorld(),ProgressBarreClass);
 		if (Barre_Winget)
 		{
 			Barre_Winget -> AddToViewport();
@@ -25,7 +25,7 @@ void Acreation_interface::BeginPlay()
 }
 
 
-void Acreation_interface::DrawHUD()
+void AInterfaceCreation::DrawHUD()
 {
 	Super::DrawHUD();
 }

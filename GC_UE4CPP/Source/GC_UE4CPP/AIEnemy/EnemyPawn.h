@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "ennemie_pawn.generated.h"
+#include "EnemyPawn.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API Aennemie_pawn : public APawn
+class GC_UE4CPP_API AEnemyPawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	Aennemie_pawn();
+	AEnemyPawn();
 
 protected:
 	// Called when the game starts or when spawned
