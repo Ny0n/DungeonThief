@@ -17,12 +17,16 @@ class GC_UE4CPP_API UKnight_Animation : public UAnimInstance
 public:
 	UKnight_Animation();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bCarrying;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bVictory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bDefeat;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimSequence* VictoryAnim;
+private:
 
+public:
+	
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	
 	void PlayVictoryAnimation();
 };

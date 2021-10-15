@@ -22,6 +22,6 @@ void UKnight_Animation::NativeUpdateAnimation(float DeltaSeconds)
 void UKnight_Animation::PlayVictoryAnimation()
 {
 	
-	USkeletalMeshComponent* Mesh = GetSkelMeshComponent();
-	if (IsValid(Mesh)) Mesh->PlayAnimation(VictoryAnim, false);
+	// USkeletalMeshComponent* Mesh = GetSkelMeshComponent();
+	// if (IsValid(Mesh)) Mesh->PlayAnimation(VictoryAnim, false);
 }
