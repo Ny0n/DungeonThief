@@ -6,30 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="792f3ff9-64dd-4065-a5b0-29576687c971" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP/.idea/indexLayout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/HUD/WBP_barre.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Barre_progression.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Barre_progression.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/IA_mobility.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/IA_mobility.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Knight_Animation.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Knight_Animation.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/RngWinget.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/RngWinget.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Woodfire.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Woodfire.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/WoodfireComponent.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/WoodfireComponent.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/creation_interface.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/creation_interface.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/ennemie_pawn.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/ennemie_pawn.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/spawn_food.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/spawn_food.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/BB-base.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/FindRandomLocation.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/MyIA_mobility.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/NPC_Bt.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/Npc_IA.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/character.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/test1/character.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/niveau.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/EnemyPawn.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/EnemyPawn.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/IA_mobility.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/IA_mobility.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +103,8 @@
       <workItem from="1634301671659" duration="619000" />
       <workItem from="1634302863370" duration="39000" />
       <workItem from="1634304043663" duration="658000" />
+      <workItem from="1634553208825" duration="2153000" />
+      <workItem from="1634559419930" duration="2874000" />
     </task>
     <servers />
   </component>

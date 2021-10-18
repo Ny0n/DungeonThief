@@ -4,26 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "IA_mobility.generated.h"
+#include "AiEnemyCharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AIA_mobility : public ACharacter
+class GC_UE4CPP_API AAiEnemyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AIA_mobility();
+	AAiEnemyCharacter();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshComponent* Enemy;
 };
