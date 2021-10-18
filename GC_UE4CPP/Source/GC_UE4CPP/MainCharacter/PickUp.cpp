@@ -25,7 +25,7 @@ APickUp::APickUp()
 void APickUp::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("I just started running"));
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
 
 	MyCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
 	PlayerCamera = MyCharacter->FindComponentByClass<UCameraComponent>();

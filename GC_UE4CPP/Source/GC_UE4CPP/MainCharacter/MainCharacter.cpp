@@ -137,7 +137,7 @@ void AMainCharacter::ToggleItemPickup()
 	if (CurrentItem)
 	{
 		bHoldingItem = !bHoldingItem;
-		CurrentItem->PickUp();
+		//CurrentItem->PickUp();
 
 		if (!bHoldingItem)
 		{
