@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "AiEnemyCharacter.generated.h"
+#include "AIEnemyCharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AAiEnemyCharacter : public ACharacter
+class GC_UE4CPP_API AAIEnemyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AAiEnemyCharacter();
+	AAIEnemyCharacter();
 
 protected:
 	// Called when the game starts or when spawned

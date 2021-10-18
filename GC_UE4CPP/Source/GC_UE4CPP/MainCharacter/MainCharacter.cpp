@@ -3,7 +3,7 @@
 
 #include "MainCharacter.h"
 #include "PickUp.h"
-#include "Knight_Animation.h"
+#include "KnightAnimation.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
@@ -197,7 +197,7 @@ void AMainCharacter::ButtonPressed(float Value)
 {
 	if (Value != 0)
 	{
-		UKnight_Animation* KnightAnim = Cast<UKnight_Animation>(GetMesh()->GetAnimInstance());
+		UKnightAnimation* KnightAnim = Cast<UKnightAnimation>(GetMesh()->GetAnimInstance());
 		if (IsValid(KnightAnim)) KnightAnim->PlayVictoryAnimation();
 	}
 }

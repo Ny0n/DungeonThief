@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "AiEnemy.generated.h"
+#include "AIEnemy.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AAiEnemy : public AActor
+class GC_UE4CPP_API AAIEnemy : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AAiEnemy();
+	AAIEnemy();
 
 protected:
 	// Called when the game starts or when spawned
