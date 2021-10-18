@@ -18,7 +18,7 @@ void AEnemySpawn::BeginPlay()
 	const FVector Location = GetActorLocation();
 	const FRotator Rotation = GetActorRotation();
 	
-	GetWorld() -> SpawnActor<AActor>(ActorTOSpawn , Location, Rotation);
+	GetWorld()->SpawnActor<AActor>(ActorToSpawn, Location, Rotation);
 }
 
 

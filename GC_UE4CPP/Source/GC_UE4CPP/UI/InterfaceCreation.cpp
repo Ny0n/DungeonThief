@@ -10,19 +10,15 @@ void AInterfaceCreation::BeginPlay()
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("test"));
 
-	if (ProgressBarreClass)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("I just started running"));
-		BarWidget = CreateWidget<UFoodProgressBar>(GetWorld(), ProgressBarreClass);
-		if (BarWidget)
-		{
-			BarWidget->AddToViewport();
-		}
-		BarWidget->UpdateFoodProgressBar(0.5f);
-	}
+	// BarWBP = CreateWidget<UFoodProgressBar>(GetWorld());
+	// if (BarWBP)
+	// {
+	// 	BarWBP->AddToViewport();
+	// }
 }
 
-void AInterfaceCreation::DrawHUD()
+void AInterfaceCreation::Tick(float DeltaSeconds)
 {
-	Super::DrawHUD();
+	Super::Tick(DeltaSeconds);
+	
 }

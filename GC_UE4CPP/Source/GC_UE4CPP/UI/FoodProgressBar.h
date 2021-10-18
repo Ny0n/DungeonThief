@@ -15,11 +15,12 @@ class GC_UE4CPP_API UFoodProgressBar : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class  UProgressBar * FoodProgressBar;
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UProgressBar* WidgetFoodProgressBar;
 	
 	UFUNCTION()
-			void UpdateFoodProgressBar(int val);
-	
-	void NativeConstruct() override;
+	void UpdateFoodProgressBar(float Value);
 };

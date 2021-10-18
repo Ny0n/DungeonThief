@@ -21,7 +21,6 @@ protected:
 
 public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite, Category= "meshToSpawn")
-	TSubclassOf<AActor> ActorTOSpawn;
-
-
+	TSubclassOf<AActor> ActorToSpawn;
+	
 };

@@ -49,7 +49,13 @@ AMainCharacter::AMainCharacter()
 
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AMainCharacter::OnOverlapBegin);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &AMainCharacter::OnOverlapEnd);
-	
+
+	// HUD
+	static ConstructorHelpers::FClassFinder<UUserWidget> UFoodProgressBarBPClass(TEXT("/Game/GC_UE4CPP/UI/HUD/WBP_FoodProgressBar"));
+	if (IsValid(UFoodProgressBarBPClass.Class))
+	{
+		BarWBPClass = UFoodProgressBarBPClass.Class;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -58,7 +64,45 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 	check(GEngine != nullptr);
 
+	if (IsValid(BarWBPClass))
+	{
+		BarWBP = CreateWidget<UFoodProgressBar>(GetWorld(), BarWBPClass);
+		BarWBP->AddToViewport();
+	}
 }
+
+// Called every frame
+void AMainCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	Start = Camera->GetComponentLocation();
+	ForwardVector = Camera->GetForwardVector();
+	End = ((ForwardVector * 200.f) + Start);
+
+}
+
+// Called to bind functionality to input
+void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	check(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
+
+	// Bind action event
+	PlayerInputComponent->BindAction("Action_E", IE_Pressed, this, &AMainCharacter::OnAction);
+
+	// HUD test
+	PlayerInputComponent->BindAction("Action_Num1", IE_Pressed, this, &AMainCharacter::Num1Pressed);
+	PlayerInputComponent->BindAction("Action_Num2", IE_Pressed, this, &AMainCharacter::Num2Pressed);
+
+}
+
+//**********************************************************************************//
 
 void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
@@ -98,37 +142,6 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("OverlapEnd"));
 		bBeginPlay = false; 
 	}
-
-}
-
-
-
-
-// Called every frame
-void AMainCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	Start = Camera->GetComponentLocation();
-	ForwardVector = Camera->GetForwardVector();
-	End = ((ForwardVector * 200.f) + Start);
-
-}
-
-// Called to bind functionality to input
-void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	check(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
-	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookUpAtRate);
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
-	PlayerInputComponent->BindAxis("Animation", this, &AMainCharacter::ButtonPressed);
-
-	// Bind action event
-	PlayerInputComponent->BindAction("Action_E", IE_Pressed, this, &AMainCharacter::OnAction);
 
 }
 
@@ -193,11 +206,15 @@ void AMainCharacter::ZoomInOut(float Value)
 		BoomArm->TargetArmLength = UKismetMathLibrary::FClamp(BoomArm->TargetArmLength + -Value * ZoomRate, 200, 800);
 }
 
-void AMainCharacter::ButtonPressed(float Value)
+void AMainCharacter::Num1Pressed()
 {
-	if (Value != 0)
-	{
-		UKnightAnimation* KnightAnim = Cast<UKnightAnimation>(GetMesh()->GetAnimInstance());
-		if (IsValid(KnightAnim)) KnightAnim->PlayVictoryAnimation();
-	}
+	// GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Num1Pressed"));
+	if (BarWBP)
+		BarWBP->AddToViewport();
+}
+
+void AMainCharacter::Num2Pressed()
+{
+	if (BarWBP)
+		BarWBP->RemoveFromParent();
 }

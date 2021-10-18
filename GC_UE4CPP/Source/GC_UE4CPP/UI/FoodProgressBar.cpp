@@ -8,12 +8,23 @@
 void UFoodProgressBar::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	if (WidgetFoodProgressBar)
+	{
+		WidgetFoodProgressBar->SetPercent(0.5);
+	}
 	
 }
 
-void UFoodProgressBar::UpdateFoodProgressBar(int val)
+void UFoodProgressBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	FoodProgressBar->SetPercent(val);
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+}
+
+void UFoodProgressBar::UpdateFoodProgressBar(float Value)
+{
+//		WidgetFoodProgressBar->SetPercent(Value);
 }
 
 

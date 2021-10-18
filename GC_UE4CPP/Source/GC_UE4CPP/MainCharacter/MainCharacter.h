@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GC_UE4CPP/UI/FoodProgressBar.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -49,6 +50,11 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
+	TSubclassOf<UUserWidget> BarWBPClass;
+	UFoodProgressBar* BarWBP;
+	void Num1Pressed();
+	void Num2Pressed();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -64,7 +70,6 @@ protected:
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
 	void ZoomInOut(float Value);
-	void ButtonPressed(float Value);
 
 	// toggle holding item pickup
 	void ToggleItemPickup();

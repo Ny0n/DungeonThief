@@ -16,11 +16,8 @@ class GC_UE4CPP_API AInterfaceCreation : public AHUD
 	GENERATED_BODY()
 	
 public:
-	virtual void DrawHUD() override;
-	virtual  void BeginPlay() override;
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
-	UPROPERTY(EditDefaultsOnly,Category= "widgets")
-	TSubclassOf<UUserWidget> ProgressBarreClass;
-	
-	UFoodProgressBar* BarWidget;
+	// UFoodProgressBar* BarWBP;
 };
