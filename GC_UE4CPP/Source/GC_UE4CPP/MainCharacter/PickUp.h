@@ -22,8 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
 
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MyMesh;
@@ -35,14 +34,12 @@ public:
 		void PickUp();
 
 
-	
-
 	bool bHolding; 
 	bool bGravity;
 
-	FRotator ControlRotation;
+		FRotator ControlRotation;
 	ACharacter* MyCharacter;
 	UCameraComponent* PlayerCamera;
-	FVector ForwardVector;
+		FVector ForwardVector;
 
 };

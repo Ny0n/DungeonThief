@@ -25,7 +25,7 @@ APickUp::APickUp()
 void APickUp::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("running"));
+	UE_LOG(LogTemp, Warning, TEXT("I just started running"));
 
 	MyCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
 	PlayerCamera = MyCharacter->FindComponentByClass<UCameraComponent>();
@@ -48,7 +48,6 @@ void APickUp::BeginPlay()
 
 void APickUp::PickUp()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PickUp"));
 	bHolding = !bHolding;
 	bGravity = !bGravity;
 	MyMesh->SetEnableGravity(bGravity);
