@@ -8,6 +8,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
+#include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -50,12 +52,7 @@ AMainCharacter::AMainCharacter()
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AMainCharacter::OnOverlapBegin);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &AMainCharacter::OnOverlapEnd);
 
-	// HUD
-	static ConstructorHelpers::FClassFinder<UUserWidget> UFoodProgressBarBPClass(TEXT("/Game/GC_UE4CPP/UI/HUD/WBP_FoodProgressBar"));
-	if (IsValid(UFoodProgressBarBPClass.Class))
-	{
-		BarWBPClass = UFoodProgressBarBPClass.Class;
-	}
+	
 }
 
 // Called when the game starts or when spawned
@@ -63,12 +60,11 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	check(GEngine != nullptr);
+	// GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("BeginPlay"));
 
-	if (IsValid(BarWBPClass))
-	{
-		BarWBP = CreateWidget<UFoodProgressBar>(GetWorld(), BarWBPClass);
-		BarWBP->AddToViewport();
-	}
+	// References to the default GameModeBase classes
+	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	HUDBase = Cast<AInterfaceCreation>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }
 
 // Called every frame
@@ -99,6 +95,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	// HUD test
 	PlayerInputComponent->BindAction("Action_Num1", IE_Pressed, this, &AMainCharacter::Num1Pressed);
 	PlayerInputComponent->BindAction("Action_Num2", IE_Pressed, this, &AMainCharacter::Num2Pressed);
+	PlayerInputComponent->BindAction("Action_Num3", IE_Pressed, this, &AMainCharacter::Num3Pressed);
 
 }
 
@@ -208,13 +205,15 @@ void AMainCharacter::ZoomInOut(float Value)
 
 void AMainCharacter::Num1Pressed()
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("Num1Pressed"));
-	if (BarWBP)
-		BarWBP->AddToViewport();
+	GameModeBase->Victory();
 }
 
 void AMainCharacter::Num2Pressed()
 {
-	if (BarWBP)
-		BarWBP->RemoveFromParent();
+	GameModeBase->Defeat();
+}
+
+void AMainCharacter::Num3Pressed()
+{
+	GameModeBase->AddFood();
 }

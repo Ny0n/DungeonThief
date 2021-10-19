@@ -5,7 +5,13 @@
 
 UKnightAnimation::UKnightAnimation()
 {
-	Speed = 0.0;
+}
+
+inline void UKnightAnimation::NativeInitializeAnimation()
+{
+	Super::NativeInitializeAnimation();
+	
+	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
 void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
@@ -17,11 +23,11 @@ void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Speed = OwningActor->GetVelocity().Size();
 	}
-}
 
-void UKnightAnimation::PlayVictoryAnimation()
-{
-	
-	// USkeletalMeshComponent* Mesh = GetSkelMeshComponent();
-	// if (IsValid(Mesh)) Mesh->PlayAnimation(VictoryAnim, false);
+	if (IsValid(GameModeBase))
+	{
+		bVictory = GameModeBase->bVictory;
+		bDefeat = GameModeBase->bDefeat;
+		bPlaying = GameModeBase->bPlaying;
+	}
 }

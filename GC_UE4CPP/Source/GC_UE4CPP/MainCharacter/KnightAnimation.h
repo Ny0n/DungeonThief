@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
 #include "KnightAnimation.generated.h"
 
 /**
@@ -14,19 +15,26 @@ class GC_UE4CPP_API UKnightAnimation : public UAnimInstance
 {
 	GENERATED_BODY()
 
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
+
 public:
 	UKnightAnimation();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Speed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bCarrying;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bVictory;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool bDefeat;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Speed = 0.0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bVictory = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bDefeat = false;
 
-private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bPlaying = false;
 
 public:
 	
+	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	
-	void PlayVictoryAnimation();
 };

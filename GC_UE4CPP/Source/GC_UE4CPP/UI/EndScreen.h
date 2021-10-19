@@ -13,5 +13,20 @@ UCLASS()
 class GC_UE4CPP_API UEndScreen : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void Restart();
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* VictoryText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* DefeatText;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UButton* RestartButton;
 	
 };

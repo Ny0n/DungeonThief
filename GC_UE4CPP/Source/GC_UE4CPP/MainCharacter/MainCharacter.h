@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
 #include "GC_UE4CPP/UI/FoodProgressBar.h"
+#include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -44,16 +46,20 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 			AActor* OtherActor,
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex);
-	
+
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
+
+	UPROPERTY()
+	AInterfaceCreation* HUDBase;
 
 public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
-	TSubclassOf<UUserWidget> BarWBPClass;
-	UFoodProgressBar* BarWBP;
 	void Num1Pressed();
 	void Num2Pressed();
+	void Num3Pressed();
 
 protected:
 	// Called when the game starts or when spawned
