@@ -6,18 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="792f3ff9-64dd-4065-a5b0-29576687c971" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/BB-base.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/FindRandomLocation.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/MyIA_mobility.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/NPC_Bt.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/Npc_IA.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/character.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprint/AI_Test/test1/character.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/niveau.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/EnemyPawn.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/EnemyPawn.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/IA_mobility.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/AIEnemy/IA_mobility.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/Main_Menu.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/Main_Menu.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/Untitled.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/Untitled.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/UI/MainMenu/WBP_MainMenu.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/UI/MainMenu/WBP_MainMenu.uasset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +98,9 @@
       <workItem from="1634304043663" duration="658000" />
       <workItem from="1634553208825" duration="2153000" />
       <workItem from="1634559419930" duration="2874000" />
+      <workItem from="1634645292139" duration="7000" />
+      <workItem from="1634645354304" duration="1707000" />
+      <workItem from="1634647180471" duration="7473000" />
     </task>
     <servers />
   </component>
