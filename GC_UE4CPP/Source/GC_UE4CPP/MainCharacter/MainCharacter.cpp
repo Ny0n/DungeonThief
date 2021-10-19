@@ -37,9 +37,10 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
 
 	HoldingComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HoldingComponent"));
-	//HoldingComponent->RelativeLocation.X = 50.0f;
-	HoldingComponent->SetupAttachment(HoldingComponent);
+	HoldingComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+	HoldingComponent->SetupAttachment(RootComponent);
 
+	bBeginPlay = false;
 	CurrentItem = NULL;
 
 	
@@ -60,7 +61,7 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	check(GEngine != nullptr);
-	// GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, TEXT("BeginPlay"));
+	
 
 	// References to the default GameModeBase classes
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -111,10 +112,12 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	if (!bHoldingItem)
 	{		
+		CurrentItem = Cast<APickUp>(OtherActor);
 		bBeginPlay = true; 
 	}
 	else
 	{
+		
 		CurrentItem = NULL;
 	}
 
@@ -144,10 +147,12 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 
 void AMainCharacter::ToggleItemPickup()
 {
+	UE_LOG(LogTemp, Warning, TEXT("ToggleItemPickup"));
 	if (CurrentItem)
 	{
-		bHoldingItem = !bHoldingItem;
-		//CurrentItem->PickUp();
+
+		UE_LOG(LogTemp, Warning, TEXT("bHoldingItem"));
+		CurrentItem->PickUp();
 
 		if (!bHoldingItem)
 		{
@@ -161,7 +166,7 @@ void AMainCharacter::OnAction()
 	
 	if (bBeginPlay)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OnAction"));
+		
 		ToggleItemPickup();
 	}
 }

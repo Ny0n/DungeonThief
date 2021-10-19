@@ -26,10 +26,6 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 	UPROPERTY(EditAnywhere)
 	float ZoomRate = 25;
 
-	/** Holding Component */
-	UPROPERTY(EditAnywhere)
-		class USceneComponent* HoldingComponent;
-
 	UPROPERTY(VisibleAnywhere, Category = "Trigger Capsule")
 		class UCapsuleComponent* TriggerCapsule;
 
@@ -88,9 +84,12 @@ public:
 
 
 	// Called to bind functionality to input
-
 	UPROPERTY(EditAnywhere)
 		class APickUp* CurrentItem;
+
+	/** Holding Component */
+	UPROPERTY(EditAnywhere)
+		class USceneComponent* HoldingComponent;
 
 	bool bCanMove;
 	bool bHoldingItem;

@@ -25,11 +25,9 @@ APickUp::APickUp()
 void APickUp::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
+	
 
-	MyCharacter = UGameplayStatics::GetPlayerCharacter(this, 0);
-	PlayerCamera = MyCharacter->FindComponentByClass<UCameraComponent>();
-
+/*
 	TArray<USceneComponent*> Components;
 
 	MyCharacter->GetComponents(Components);
@@ -43,18 +41,22 @@ void APickUp::BeginPlay()
 				HoldingComp = Cast<USceneComponent>(Comp);
 			}
 		}
-	}
+	}*/
 }
 
 void APickUp::PickUp()
 {
 	bHolding = !bHolding;
 	bGravity = !bGravity;
+
 	MyMesh->SetEnableGravity(bGravity);
 	MyMesh->SetSimulatePhysics(bHolding ? false : true);
 	MyMesh->SetCollisionEnabled(bHolding ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
+
+
 	if (HoldingComp && bHolding)
 	{
+		
 		MyMesh->AttachToComponent(HoldingComp, FAttachmentTransformRules::KeepWorldTransform);
 		SetActorLocation(HoldingComp->GetComponentLocation());
 	}
@@ -65,6 +67,7 @@ void APickUp::PickUp()
 		ForwardVector = PlayerCamera->GetForwardVector();
 		MyMesh->AddForce(ForwardVector * 100000 * MyMesh->GetMass());
 	}
+	
 }
 
 
