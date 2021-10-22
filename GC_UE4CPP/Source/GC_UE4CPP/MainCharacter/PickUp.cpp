@@ -13,6 +13,14 @@ APickUp::APickUp()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("My Mesh"));
+	MyMesh -> SetupAttachment(RootComponent);
+
+	BoxMesh = CreateDefaultSubobject<UBoxComponent>(TEXT("My Box"));
+	BoxMesh ->SetupAttachment(MyMesh);
+
+	BoxMesh -> SetRelativeScale3D(FVector(2,2,2));
+	BoxMesh -> SetRelativeLocation(FVector(0,0,0));
+	
 	MyMesh->SetSimulatePhysics(true);
 	RootComponent = MyMesh;
 
