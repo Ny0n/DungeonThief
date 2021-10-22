@@ -94,6 +94,8 @@ public:
 	bool bCanMove;
 	bool bHoldingItem;
 	bool bBeginPlay = false;
+	bool bHolding; 
+	bool bGravity; 
 
 	float PitchMax;
 	float PitchMin;

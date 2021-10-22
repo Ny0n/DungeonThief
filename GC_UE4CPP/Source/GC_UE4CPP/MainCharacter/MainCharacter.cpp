@@ -150,9 +150,18 @@ void AMainCharacter::ToggleItemPickup()
 	UE_LOG(LogTemp, Warning, TEXT("ToggleItemPickup"));
 	if (CurrentItem)
 	{
-
 		UE_LOG(LogTemp, Warning, TEXT("bHoldingItem"));
-		CurrentItem->PickUp();
+		HoldingComp = TriggerCapsule->GetComponentLocation();
+		
+		bHolding = !bHolding;
+		bGravity = !bGravity;
+
+		CurrentItem->MyMesh->SetEnableGravity(bGravity);
+		CurrentItem->MyMesh->SetSimulatePhysics(bHolding ? false : true);
+		CurrentItem->MyMesh->SetCollisionEnabled(bHolding ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
+
+		CurrentItem->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		SetActorLocation(TriggerCapsule->GetComponentLocation());
 
 		if (!bHoldingItem)
 		{
