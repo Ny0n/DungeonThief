@@ -3,46 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
+#include "GameFramework/Actor.h"
 #include "../MainCharacter/PickUp.h"
-#include "Engine/TriggerBox.h"
-#include "SpotFood.generated.h"
+#include "../GC_UE4CPPGameModeBase.h"
+
+#include "FoodChess.generated.h"
 
 
 UCLASS()
-class GC_UE4CPP_API ASpotFood : public AActor
+class GC_UE4CPP_API AFoodChess : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASpotFood();
+	AFoodChess();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
+
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshToPutFood;
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	UBoxComponent* BoxPutFood;
 
-	UFUNCTION()
-	bool GetHaveFood();
-	
-	UFUNCTION()
-	void SetHaveFood(bool BFood);
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
 
-	UFUNCTION()
-	FVector GetSpotFoodLocation();
-
-	UFUNCTION()
-	FRotator GetSpotFoodRotation();
-
-	
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor,
@@ -50,11 +42,4 @@ public:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
-	
-private:
-	FVector BoxLocation;
-	FRotator BoxRotation;
-	FVector Location;
-	FRotator Rotation;
-	bool HaveFood = false;
 };

@@ -58,5 +58,11 @@ void AGC_UE4CPPGameModeBase::Play()
 
 void AGC_UE4CPPGameModeBase::AddFood()
 {
-	FoodCurrentQuantity = UKismetMathLibrary::Min(FoodCurrentQuantity + 1.0, FoodMaxQuantity);
+	FoodCurrentQuantity = UKismetMathLibrary::Min(FoodCurrentQuantity + 1, FoodMaxQuantity);
+	NbFood++;
+	if (NbFood == 5 )
+	{
+		Victory();
+	}
+	
 }

@@ -37,6 +37,7 @@ public:
 	UPROPERTY()
 	AInterfaceCreation* HUDBase;
 
+	int NbFood=0;
 	void Victory();
 	void Defeat();
 	void Play();

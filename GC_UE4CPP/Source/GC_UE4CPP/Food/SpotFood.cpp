@@ -11,7 +11,7 @@ ASpotFood::ASpotFood()
 	MeshToPutFood = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Table_Small"));
 	MeshToPutFood -> SetupAttachment(RootComponent);
 
-	BoxPutFood = CreateDefaultSubobject<UBoxComponent>(TEXT("RightBox"));
+	BoxPutFood = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	BoxPutFood -> SetupAttachment(MeshToPutFood);
 
 	BoxLocation=FVector(0,0,100);
@@ -30,6 +30,7 @@ ASpotFood::ASpotFood()
 void ASpotFood::BeginPlay()
 {
 	Super::BeginPlay();
+	BoxPutFood->OnComponentBeginOverlap.AddDynamic(this, &ASpotFood::OnBoxBeginOverlap);
 
 }
 
@@ -56,6 +57,25 @@ FRotator ASpotFood::GetSpotFoodRotation()
 	return Rotation+BoxRotation;
 }
 
+void ASpotFood::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("touché par"), *OtherActor->());
 
+	APickUp* food = Cast<APickUp>(OtherActor);
+	if (food != nullptr)
+	{
+		if (!HaveFood && !food->GetIsPickUP())
+		{
+			food->SetActorLocation(this ->GetSpotFoodLocation());
+			SetHaveFood(true);
+		}
+	}
+	
+}
 
 

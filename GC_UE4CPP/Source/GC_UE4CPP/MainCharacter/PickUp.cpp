@@ -34,6 +34,7 @@ void APickUp::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
 }
 
 void APickUp::PickUp()
