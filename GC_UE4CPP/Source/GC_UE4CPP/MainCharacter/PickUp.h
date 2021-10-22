@@ -33,6 +33,14 @@ public:
 	UFUNCTION()
 		void PickUp();
 
+	bool IsPickUp = false;
+
+	UFUNCTION()
+		bool GetIsPickUP();
+
+	UFUNCTION()
+		void SetIsPickUp(bool BPickUp);
+
 
 	bool bHolding; 
 	bool bGravity;

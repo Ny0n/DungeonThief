@@ -29,29 +29,16 @@ void APickUp::BeginPlay()
 }
 
 void APickUp::PickUp()
-{
-	//bHolding = !bHolding;
-	//bGravity = !bGravity;
-
-	/*MyMesh->SetEnableGravity(bGravity);
-	MyMesh->SetSimulatePhysics(bHolding ? false : true);
-	MyMesh->SetCollisionEnabled(bHolding ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
-
-
-	if (HoldingComp && bHolding)
-	{
-		
-		MyMesh->AttachToComponent(HoldingComp, FAttachmentTransformRules::KeepWorldTransform);
-		SetActorLocation(HoldingComp->GetComponentLocation());
-	}
-
-	if (!bHolding)
-	{
-		MyMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		ForwardVector = PlayerCamera->GetForwardVector();
-		MyMesh->AddForce(ForwardVector * 100000 * MyMesh->GetMass());
-	}*/
-	
+{	
 }
 
+bool APickUp::GetIsPickUP()
+{
+	return IsPickUp;
+}
+
+void APickUp::SetIsPickUp(bool BPickUp)
+{
+	IsPickUp = BPickUp;
+}
 
