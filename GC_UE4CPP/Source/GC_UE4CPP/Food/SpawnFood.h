@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "SpawnFood.generated.h"
 
@@ -23,5 +24,20 @@ public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite, Category= "meshToSpawn")
 	TSubclassOf<AActor> ActorTOSpawn;
 
+	UPROPERTY(EditAnywhere , BlueprintReadWrite)
+	UBoxComponent* RightBoxColider;
+
+	UPROPERTY(EditAnywhere , BlueprintReadWrite)
+	UBoxComponent* LeftBoxColider;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* staticTable;
+
+
+	FVector RightLocation;
+	FVector LeftLocation;
+	FRotator RightRotation;
+	FRotator LeftRotation;
+	
 	
 };
