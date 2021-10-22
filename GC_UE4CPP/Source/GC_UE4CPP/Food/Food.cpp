@@ -10,6 +10,8 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 	static_food = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("donnut"));
 	static_food -> SetupAttachment(RootComponent);
+
+	
 }
 
 // Called when the game starts or when spawned

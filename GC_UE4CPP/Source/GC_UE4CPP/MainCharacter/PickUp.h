@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
 #include "PickUp.generated.h"
 
 UCLASS()
@@ -27,8 +28,11 @@ public:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* MyMesh;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	 UBoxComponent* BoxMesh;
+	
 	UPROPERTY(EditAnywhere)
-		USceneComponent* HoldingComp; 
+	USceneComponent* HoldingComp; 
 
 	UFUNCTION()
 		void PickUp();
