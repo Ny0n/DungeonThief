@@ -76,6 +76,7 @@ protected:
 	// toggle holding item pickup
 	void ToggleItemPickup();
 
+	void ToggleItemDropDown();
 	
 
 public:	
@@ -93,7 +94,7 @@ public:
 
 	bool bCanMove;
 	bool bHoldingItem;
-	bool bBeginPlay = false;
+	bool bBeginPlay;
 	bool bHolding; 
 	bool bGravity; 
 

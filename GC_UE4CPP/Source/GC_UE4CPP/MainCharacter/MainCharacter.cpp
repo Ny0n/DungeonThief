@@ -40,9 +40,9 @@ AMainCharacter::AMainCharacter()
 	HoldingComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 	HoldingComponent->SetupAttachment(RootComponent);
 
-	bBeginPlay = false;
+	
 	CurrentItem = NULL;
-
+	
 	
 
 	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
@@ -61,7 +61,7 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	check(GEngine != nullptr);
-	
+	bBeginPlay = false;
 
 	// References to the default GameModeBase classes
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -109,16 +109,16 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-
+	bBeginPlay = true;
 	if (!bHoldingItem)
 	{		
 		CurrentItem = Cast<APickUp>(OtherActor);
-		bBeginPlay = true; 
+		
 	}
 	else
 	{
 		
-		CurrentItem = NULL;
+		CurrentItem = nullptr;
 	}
 
 	if (OtherActor && (OtherActor != this) && OtherComp) {
@@ -147,36 +147,44 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 
 void AMainCharacter::ToggleItemPickup()
 {
-	UE_LOG(LogTemp, Warning, TEXT("ToggleItemPickup"));
-	if (CurrentItem)
+	
+	if (CurrentItem != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("bHoldingItem"));
-		HoldingComp = TriggerCapsule->GetComponentLocation();
-		
-		bHolding = !bHolding;
-		bGravity = !bGravity;
-
-		CurrentItem->MyMesh->SetEnableGravity(bGravity);
-		CurrentItem->MyMesh->SetSimulatePhysics(bHolding ? false : true);
-		CurrentItem->MyMesh->SetCollisionEnabled(bHolding ? ECollisionEnabled::NoCollision : ECollisionEnabled::QueryAndPhysics);
-
+		CurrentItem->MyMesh->SetEnableGravity(false);
+		CurrentItem->MyMesh->SetSimulatePhysics(false);
+		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentItem->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		SetActorLocation(TriggerCapsule->GetComponentLocation());
+		CurrentItem->SetIsPickUp(true);
+	}
+}
 
-		if (!bHoldingItem)
-		{
-			CurrentItem = NULL;
-		}
+void AMainCharacter::ToggleItemDropDown()
+{
+	
+	if (CurrentItem != nullptr)
+	{
+		CurrentItem->MyMesh->SetEnableGravity(true);
+		CurrentItem->MyMesh->SetSimulatePhysics(true);
+		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CurrentItem->DetachRootComponentFromParent(true);
+		CurrentItem->SetIsPickUp(false);
 	}
 }
 
 void AMainCharacter::OnAction()
 {
-	
-	if (bBeginPlay)
+	if (CurrentItem != nullptr)
 	{
+		if (CurrentItem->GetIsPickUP())
+		{
 		
-		ToggleItemPickup();
+			ToggleItemDropDown();
+		
+		}
+		else {
+		
+			ToggleItemPickup();
+		}
 	}
 }
 

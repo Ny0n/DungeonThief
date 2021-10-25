@@ -36,8 +36,6 @@ void AFoodChess::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		bool bFromSweep,
 		const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("touché par"), *OtherActor->GetName());
-
 	APickUp* food = Cast<APickUp>(OtherActor);
 	
 	if (food != nullptr)

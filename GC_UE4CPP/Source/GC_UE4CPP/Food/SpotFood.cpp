@@ -10,14 +10,14 @@ ASpotFood::ASpotFood()
 	PrimaryActorTick.bCanEverTick = true;
 	MeshToPutFood = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Table_Small"));
 	MeshToPutFood -> SetupAttachment(RootComponent);
-
+	
 	BoxPutFood = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
 	BoxPutFood -> SetupAttachment(MeshToPutFood);
 
 	BoxLocation=FVector(0,0,100);
 	BoxRotation=FRotator(0,0,0);
 
-	BoxPutFood-> SetRelativeScale3D(FVector(4,2,1));
+	BoxPutFood-> SetRelativeScale3D(FVector(4,3,1));
 	BoxPutFood -> SetRelativeLocation(BoxLocation);
 	BoxPutFood -> SetRelativeRotation(BoxRotation);
 
@@ -64,8 +64,7 @@ void ASpotFood::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		bool bFromSweep,
 		const FHitResult& SweepResult)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("touché par"), *OtherActor->());
-
+	UE_LOG(LogTemp, Warning, TEXT("touché par"));
 	APickUp* food = Cast<APickUp>(OtherActor);
 	if (food != nullptr)
 	{
