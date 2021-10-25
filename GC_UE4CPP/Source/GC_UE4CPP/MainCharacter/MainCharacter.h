@@ -77,7 +77,8 @@ protected:
 	void ToggleItemPickup();
 
 	void ToggleItemDropDown();
-	
+
+	bool GetTake();
 
 public:	
 	// Called every frame
@@ -94,9 +95,7 @@ public:
 
 	bool bCanMove;
 	bool bHoldingItem;
-	bool bBeginPlay;
-	bool bHolding; 
-	bool bGravity; 
+	bool bTake = false;
 
 	float PitchMax;
 	float PitchMin;

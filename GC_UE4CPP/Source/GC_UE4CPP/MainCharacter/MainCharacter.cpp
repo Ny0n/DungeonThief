@@ -3,7 +3,6 @@
 
 #include "MainCharacter.h"
 #include "../Food/PickUp.h"
-#include "KnightAnimation.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
@@ -46,14 +45,12 @@ AMainCharacter::AMainCharacter()
 	
 
 	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
-	TriggerCapsule->InitCapsuleSize(55.f, 96.0f);;
+	TriggerCapsule->InitCapsuleSize(55.f, 96.0f);
 	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
 	TriggerCapsule->SetupAttachment(RootComponent);
 
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AMainCharacter::OnOverlapBegin);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &AMainCharacter::OnOverlapEnd);
-
-	
 }
 
 // Called when the game starts or when spawned
@@ -61,7 +58,6 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	check(GEngine != nullptr);
-	bBeginPlay = false;
 
 	// References to the default GameModeBase classes
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -109,18 +105,15 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	bBeginPlay = true;
 	if (!bHoldingItem)
 	{		
 		CurrentItem = Cast<APickUp>(OtherActor);
-		
 	}
 	else
 	{
 		
 		CurrentItem = nullptr;
 	}
-
 	if (OtherActor && (OtherActor != this) && OtherComp) {
 		if (GEngine)
 		{
@@ -136,11 +129,9 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("OverlapEnd"));
-		bBeginPlay = false; 
 	}
 
 }
@@ -155,6 +146,10 @@ void AMainCharacter::ToggleItemPickup()
 		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentItem->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
 		CurrentItem->SetIsPickUp(true);
+		bTake = true;
+		/*CurrentItem->SetActorLocation(GetActorLocation() +FVector(35,0,-30) - 20* GetActorForwardVector());
+		CurrentItem->SetActorRotation(GetActorRotation()+FRotator(0,-45,0));
+		CurrentItem->SetActorScale3D(FVector(0.25,0.25,0.25));*/
 	}
 }
 
@@ -168,6 +163,7 @@ void AMainCharacter::ToggleItemDropDown()
 		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		CurrentItem->DetachRootComponentFromParent(true);
 		CurrentItem->SetIsPickUp(false);
+		bTake = false;
 	}
 }
 
@@ -177,21 +173,21 @@ void AMainCharacter::OnAction()
 	{
 		if (CurrentItem->GetIsPickUP())
 		{
-		
-			ToggleItemDropDown();
-		
+				ToggleItemDropDown();
 		}
 		else {
-		
-			ToggleItemPickup();
+				ToggleItemPickup();
 		}
 	}
 }
 
 void AMainCharacter::MoveForward(float Value)
 {
-	
-	if (Controller != NULL && Value != 0.0) {
+	if (GetTake())
+	{
+		Value = Value / 2.0;
+	}
+	if (Controller != nullptr && Value != 0.0) {
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator Yaw(0, Rotation.Yaw, 0);
 		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
@@ -201,7 +197,11 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::MoveRight(float Value)
 {
-	if (Controller != NULL && Value != 0.0) {
+	if (GetTake())
+	{
+		Value = Value / 2.0;
+	}
+	if (Controller != nullptr && Value != 0.0) {
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator Yaw(0, Rotation.Yaw, 0);
 		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
@@ -238,4 +238,9 @@ void AMainCharacter::Num2Pressed()
 void AMainCharacter::Num3Pressed()
 {
 	GameModeBase->AddFood();
+}
+
+bool AMainCharacter::GetTake()
+{
+	return bTake;
 }
