@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
-#include "../MainCharacter/PickUp.h"
+#include "PickUp.h"
 #include "../GC_UE4CPPGameModeBase.h"
 
 #include "FoodChess.generated.h"

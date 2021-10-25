@@ -2,7 +2,7 @@
 
 
 #include "MainCharacter.h"
-#include "PickUp.h"
+#include "../Food/PickUp.h"
 #include "KnightAnimation.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"

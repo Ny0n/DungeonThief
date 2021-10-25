@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/BoxComponent.h"
-#include "../MainCharacter/PickUp.h"
+#include "PickUp.h"
 #include "Engine/TriggerBox.h"
 #include "SpotFood.generated.h"
 
