@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
+#include "GC_UE4CPP/Food/PickUp.h"
 #include "GC_UE4CPP/UI/FoodProgressBar.h"
 #include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "MainCharacter.generated.h"
@@ -74,9 +75,9 @@ protected:
 	void ZoomInOut(float Value);
 
 	// toggle holding item pickup
-	void ToggleItemPickup();
+	void ToggleItemPickup(APickUp* CurrentItem);
 
-	void ToggleItemDropDown();
+	void ToggleItemDropDown(APickUp* CurrentItem);
 
 	bool GetTake();
 
@@ -87,29 +88,18 @@ public:
 
 	// Called to bind functionality to input
 	UPROPERTY(EditAnywhere)
-		class APickUp* CurrentItem;
+	class APickUp* CurrentItem;
 
-	/** Holding Component */
 	UPROPERTY(EditAnywhere)
-		class USceneComponent* HoldingComponent;
+	class ASpotFood* CurrentSpotFood;
 
-	bool bCanMove;
-	bool bHoldingItem;
+	bool bHoldingItem = false;
+	bool bHoldingSpot = false;
 	bool bTake = false;
-
-	float PitchMax;
-	float PitchMin;
-
+	
 	FVector HoldingComp;
-	FRotator LastRotation;
 
 	FVector Start;
 	FVector ForwardVector;
 	FVector End;
-
-	FHitResult Hit;
-
-	FComponentQueryParams DefaultComponentQueryParams;
-	FCollisionResponseParams DefaultResponseParam;
-
 };

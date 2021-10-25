@@ -29,7 +29,11 @@ public:
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	UBoxComponent* BoxPutFood;
+	
+	UPROPERTY(EditAnywhere , BlueprintReadWrite)
+	APickUp* FoodPickUp;
 
+	
 	UFUNCTION()
 	bool GetHaveFood();
 	

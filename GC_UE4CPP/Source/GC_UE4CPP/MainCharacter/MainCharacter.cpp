@@ -3,6 +3,7 @@
 
 #include "MainCharacter.h"
 #include "../Food/PickUp.h"
+#include "../Food/SpotFood.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
@@ -34,16 +35,7 @@ AMainCharacter::AMainCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 540, 0);
-
-	HoldingComponent = CreateDefaultSubobject<USceneComponent>(TEXT("HoldingComponent"));
-	HoldingComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-	HoldingComponent->SetupAttachment(RootComponent);
-
 	
-	CurrentItem = NULL;
-	
-	
-
 	TriggerCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Trigger Capsule"));
 	TriggerCapsule->InitCapsuleSize(55.f, 96.0f);
 	TriggerCapsule->SetCollisionProfileName(TEXT("Trigger"));
@@ -105,23 +97,19 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	if (!bHoldingItem)
-	{		
-		CurrentItem = Cast<APickUp>(OtherActor);
-	}
-	else
+	CurrentItem = Cast<APickUp>(OtherActor);
+	if (CurrentItem != nullptr)
 	{
-		
-		CurrentItem = nullptr;
+		bHoldingItem = true;
+		UE_LOG(LogTemp, Warning, TEXT("Item"));
 	}
-	if (OtherActor && (OtherActor != this) && OtherComp) {
-		if (GEngine)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("OverlapBegin"));
-		}
-	}
-	
 
+	CurrentSpotFood = Cast<ASpotFood>(OtherActor);
+	if (CurrentSpotFood != nullptr)
+	{
+		bHoldingSpot = true;
+		UE_LOG(LogTemp, Warning, TEXT("Spot"));
+	}
 }
 
 void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
@@ -129,41 +117,50 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	if (GEngine)
+	CurrentItem = Cast<APickUp>(OtherActor);
+	if (CurrentItem != nullptr || CurrentSpotFood != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("OverlapEnd"));
+		bHoldingItem = false;
+		bHoldingSpot = false;
+		UE_LOG(LogTemp, Warning, TEXT("lache tout"));
 	}
-
+	/*if (!bTake)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("je ne tien riens donc je detruit"));
+		CurrentItem = nullptr;
+		CurrentSpotFood = nullptr;
+	}*/
 }
 
-void AMainCharacter::ToggleItemPickup()
+void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood)
 {
-	
-	if (CurrentItem != nullptr)
+	if (CurrentFood != nullptr)
 	{
-		CurrentItem->MyMesh->SetEnableGravity(false);
-		CurrentItem->MyMesh->SetSimulatePhysics(false);
-		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		CurrentItem->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		CurrentItem->SetIsPickUp(true);
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetIsPickUp(true);
 		bTake = true;
-		/*CurrentItem->SetActorLocation(GetActorLocation() +FVector(35,0,-30) - 20* GetActorForwardVector());
-		CurrentItem->SetActorRotation(GetActorRotation()+FRotator(0,-45,0));
-		CurrentItem->SetActorScale3D(FVector(0.25,0.25,0.25));*/
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));
 	}
 }
 
-void AMainCharacter::ToggleItemDropDown()
+void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood)
 {
-	
-	if (CurrentItem != nullptr)
+	if (CurrentFood != nullptr)
 	{
-		CurrentItem->MyMesh->SetEnableGravity(true);
-		CurrentItem->MyMesh->SetSimulatePhysics(true);
-		CurrentItem->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CurrentItem->DetachRootComponentFromParent(true);
-		CurrentItem->SetIsPickUp(false);
+		CurrentFood->MyMesh->SetEnableGravity(true);
+		CurrentFood->MyMesh->SetSimulatePhysics(true);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CurrentFood->DetachRootComponentFromParent(true);
+		CurrentFood->SetIsPickUp(false);
 		bTake = false;
+		CurrentFood->SetActorLocation(GetActorLocation() +100* GetActorForwardVector()); 
+		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
+		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
 	}
 }
 
@@ -171,13 +168,38 @@ void AMainCharacter::OnAction()
 {
 	if (CurrentItem != nullptr)
 	{
+
+		UE_LOG(LogTemp, Warning, TEXT("E + Food"));
 		if (CurrentItem->GetIsPickUP())
 		{
-				ToggleItemDropDown();
+			UE_LOG(LogTemp, Warning, TEXT("lacher"));
+			ToggleItemDropDown(CurrentItem);
 		}
-		else {
-				ToggleItemPickup();
+		if (bHoldingItem)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("tenir"));
+			ToggleItemPickup(CurrentItem);
 		}
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("current item detruit"));
+
+	}
+	if (CurrentSpotFood != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("E + Spot"));
+		if (CurrentSpotFood ->GetHaveFood())
+		{
+			ToggleItemDropDown(CurrentSpotFood->FoodPickUp);
+		}
+		else
+		{
+			ToggleItemPickup(CurrentSpotFood->FoodPickUp);
+		}
+	}else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Spot item detruit"));
+
 	}
 }
 

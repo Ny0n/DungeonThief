@@ -65,12 +65,12 @@ void ASpotFood::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("touché par"));
-	APickUp* food = Cast<APickUp>(OtherActor);
-	if (food != nullptr)
+	FoodPickUp = Cast<APickUp>(OtherActor);
+	if (FoodPickUp != nullptr)
 	{
-		if (!HaveFood && !food->GetIsPickUP())
+		if (!HaveFood && !FoodPickUp->GetIsPickUP())
 		{
-			food->SetActorLocation(this ->GetSpotFoodLocation());
+			FoodPickUp->SetActorLocation(this ->GetSpotFoodLocation());
 			SetHaveFood(true);
 		}
 	}
