@@ -76,13 +76,13 @@ protected:
 	void ZoomInOut(float Value);
 
 	// toggle holding item pickup
-	void ToggleItemPickup(APickUp* CurrentItem);
+	void ToggleItemPickup(APickUp* CurrentFood);
 
-	void ToggleItemDropDown(APickUp* CurrentItem);
+	void ToggleItemDropDown(APickUp* CurrentFood);
 
 	void ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
-	void ToggleItemDropDownSpot(ASpotFood* CurrentSpotFood, APickUp* CurrentItem);
+	void ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
 	bool GetTake();
 	void SetTake(bool Take);

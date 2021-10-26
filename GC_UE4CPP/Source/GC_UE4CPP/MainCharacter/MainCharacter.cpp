@@ -1,4 +1,5 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
+//		UE_LOG(LogTemp, Warning, TEXT("spotenregistré"));
 
 
 #include "MainCharacter.h"
@@ -102,15 +103,18 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
     	CurrentItem = Cast<APickUp>(OtherActor);
         if (CurrentItem !=nullptr)
         {
-        	UE_LOG(LogTemp, Warning, TEXT("nouvel Item"));
         	bTouchItem = true;
         }
     }
-	CurrentSpotFood = Cast<ASpotFood>(OtherActor);
-	if(CurrentSpotFood != nullptr)
+	if (!bTouchSpot)
 	{
-		bTouchSpot = true;
+		CurrentSpotFood = Cast<ASpotFood>(OtherActor);
+		if(CurrentSpotFood != nullptr)
+		{
+			bTouchSpot = true;
+		}
 	}
+	
 	
 	
 }
@@ -120,14 +124,16 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
+	CurrentSpotFood = Cast<ASpotFood>(OtherActor);
 	if (CurrentSpotFood != nullptr)
 	{
-		CurrentSpotFood = nullptr;
 		bTouchSpot = false;
+		CurrentSpotFood = nullptr;
 	}
+	
 }
 
-void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood)
+void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
 {
 	if (CurrentFood != nullptr)
 	{
@@ -142,7 +148,7 @@ void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood)
 	}
 }
 
-void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood)
+void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
 {
 	if (CurrentFood != nullptr)
 	{
@@ -157,36 +163,50 @@ void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood)
 	}
 }
 
-void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood)
+void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
 {
-	if ( CurrentFood != nullptr && CurrentSpot !=nullptr )
-	{
-		CurrentSpot->SetHaveFood(false);
-		CurrentFood->SetIsPickUp(true);
-		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
-		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
-		CurrentFood->SetActorRotation(FRotator(0,-45,0));	}
+	CurrentSpot->SetHaveFood(false);
+	CurrentFood->SetIsPickUp(true);
+	CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+	CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+	CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+	CurrentFood->SetActorRotation(FRotator(0,-45,0));	
+	
 }
 
-void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood)
+void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Put the food on the spot
 {
-	if ( CurrentFood != nullptr && CurrentSpot !=nullptr )
-	{
-		CurrentSpot->SetHaveFood(true);
-		CurrentFood->DetachRootComponentFromParent(true);
-		CurrentFood->MyMesh->SetEnableGravity(false);
-		CurrentFood->MyMesh->SetSimulatePhysics(false);
-		CurrentFood->SetIsPickUp(false);
-		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
-		CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
-		CurrentFood->SetActorRotation(FRotator(0,0,0));
-	}
+	CurrentFood->DetachRootComponentFromParent(true);
+
+	CurrentSpot->SetHaveFood(true);
+	CurrentFood->SetIsPickUp(false);
+	
+	CurrentFood->MyMesh->SetEnableGravity(false);
+	CurrentFood->MyMesh->SetSimulatePhysics(false);
+	CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
+	CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
+	CurrentFood->SetActorRotation(FRotator(0,0,0));
+	CurrentSpotFood=CurrentSpot;
 }
 
 void AMainCharacter::OnAction()
 {
-	if (CurrentItem != nullptr && CurrentSpotFood == nullptr)
+	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
+	{
+
+		if (GetTake() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
+		{
+			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
+			SetTake(false);
+			
+		}else if (!GetTake() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
+		{
+			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
+			SetTake(true);
+
+		}
+	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)
 	{
 		if (GetTake()) //drop Item
 		{
@@ -201,19 +221,7 @@ void AMainCharacter::OnAction()
 			SetTake(true);
 		}
 	}
-	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
-	{
-		if (GetTake() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
-		{
-			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
-			SetTake(false);
-		}else if (!GetTake() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
-		{
-			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
-			SetTake(true);
-
-		}
-	}
+	
 }
 
 //********************************** MOVE ************************************************//

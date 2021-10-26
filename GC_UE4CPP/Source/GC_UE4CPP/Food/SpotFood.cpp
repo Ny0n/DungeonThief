@@ -17,7 +17,7 @@ ASpotFood::ASpotFood()
 	BoxLocation=FVector(0,0,100);
 	BoxRotation=FRotator(0,0,0);
 
-	BoxPutFood-> SetRelativeScale3D(FVector(4,3,1));
+	BoxPutFood-> SetRelativeScale3D(FVector(3,3,1));
 	BoxPutFood -> SetRelativeLocation(BoxLocation);
 	BoxPutFood -> SetRelativeRotation(BoxRotation);
 
