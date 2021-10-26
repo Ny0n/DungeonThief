@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
+#include "PickUp.h"
 #include "SpawnFood.generated.h"
 
 UCLASS()
@@ -25,21 +26,29 @@ public:
 	TSubclassOf<AActor> ActorTOSpawn;
 
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	UBoxComponent* RightBoxColider;
-
-	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	UBoxComponent* LeftBoxColider;
+	UBoxComponent* BoxColider;
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* staticTable;
 
-	void SpawnLeft();
-	void SpawnRight();
+	UPROPERTY(EditAnywhere)
+	class APickUp* FoodSpawn;
 
-	FVector RightLocation;
-	FVector LeftLocation;
-	FRotator RightRotation;
-	FRotator LeftRotation;
+	UFUNCTION()
+		void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult);
+	
+	void Spawn();
+	float HaveFood = false;
+	bool GetHaveFood();
+	void SetHaveFood(bool Food);
+	
+	FVector Location;
+	FRotator Rotation;
 	
 	
 };

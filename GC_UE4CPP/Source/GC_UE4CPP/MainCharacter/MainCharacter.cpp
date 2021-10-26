@@ -189,7 +189,7 @@ void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* Cur
 	CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
 	CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
 	CurrentFood->SetActorRotation(FRotator(0,0,0));
-	CurrentSpotFood = CurrentSpot;
+	CurrentSpotFood = CurrentSpot; 
 }
 
 void AMainCharacter::OnAction()

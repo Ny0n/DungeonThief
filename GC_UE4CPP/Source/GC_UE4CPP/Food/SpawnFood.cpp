@@ -12,27 +12,21 @@ ASpawnFood::ASpawnFood()
 	PrimaryActorTick.bCanEverTick = true;
 	// Create 2 box and a mesh
 	staticTable = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("donnut"));
-	RightBoxColider = CreateDefaultSubobject<UBoxComponent>(TEXT("RightBox"));
-	LeftBoxColider = CreateDefaultSubobject<UBoxComponent>(TEXT("LeftBox"));
+	BoxColider = CreateDefaultSubobject<UBoxComponent>(TEXT("RightBox"));
 
 	staticTable -> SetupAttachment(RootComponent);
-	RightBoxColider -> SetupAttachment(staticTable);
-	LeftBoxColider -> SetupAttachment(staticTable);
+	BoxColider -> SetupAttachment(staticTable);
 
 	//save Position and rotation of the box
-	RightLocation=FVector(0,80,100);
-	LeftLocation=FVector(0,-80,100);
-	RightRotation=FRotator(0,0,0);
-	LeftRotation=FRotator(0,0,0);
+	Location=FVector(0,0,200);
+	Rotation=FRotator(0,0,0);
 
 	//Set Position and rotation of the box
-	RightBoxColider-> SetRelativeScale3D(FVector(4,2,1));
-	RightBoxColider -> SetRelativeLocation(RightLocation);
-	RightBoxColider -> SetRelativeRotation(RightRotation);
+	BoxColider-> SetRelativeScale3D(FVector(4,5,1));
+	BoxColider -> SetRelativeLocation(Location);
+	BoxColider -> SetRelativeRotation(Rotation);
 	
-	LeftBoxColider-> SetRelativeScale3D(FVector(4,2,1));
-	LeftBoxColider -> SetRelativeLocation(LeftLocation);
-	LeftBoxColider -> SetRelativeRotation(LeftRotation);
+	
 
 }
 
@@ -40,17 +34,42 @@ ASpawnFood::ASpawnFood()
 void ASpawnFood::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("SPawn"));	
-	SpawnLeft();
-	SpawnRight();
+	BoxColider->OnComponentBeginOverlap.AddDynamic(this, &ASpawnFood::OnOverlapBegin);
+	Spawn();
 }
 
-void ASpawnFood::SpawnLeft()
+void ASpawnFood::Spawn()
 {
-	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,GetActorLocation()+ LeftLocation, GetActorRotation() + LeftRotation);
+	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,GetActorLocation()+ Location, GetActorRotation() + Rotation);
 }
-void ASpawnFood::SpawnRight()
+UFUNCTION()
+		void ASpawnFood::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult& SweepResult)
 {
-	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,GetActorLocation()+ RightLocation, GetActorRotation() + RightRotation);
+	FoodSpawn = Cast<APickUp>(OtherActor);
+	if (FoodSpawn !=nullptr && !FoodSpawn->IsPickUp())
+	{
+		FoodSpawn->MyMesh->SetEnableGravity(false);
+		FoodSpawn->MyMesh->SetSimulatePhysics(false);
+		FoodSpawn->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		FoodSpawn->SetActorLocation(GetActorLocation() + FVector(0,0,100) ); 
+		FoodSpawn->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
+		FoodSpawn->SetActorScale3D(FVector(1,1,1));
+		SetHaveFood(true);
+	}
 }
+bool ASpawnFood::GetHaveFood()
+{
+	return HaveFood;
+}
+
+void ASpawnFood::SetHaveFood(bool food)
+{
+	HaveFood = food;
+}
+
 
