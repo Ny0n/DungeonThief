@@ -88,7 +88,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
-//**********************************************************************************//
+//*********************************** Pick up ***********************************************//
 
 void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
@@ -97,19 +97,22 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	CurrentItem = Cast<APickUp>(OtherActor);
-	if (CurrentItem != nullptr)
-	{
-		bHoldingItem = true;
-		UE_LOG(LogTemp, Warning, TEXT("Item"));
-	}
-
+	if(!GetTake()) 
+    {
+    	CurrentItem = Cast<APickUp>(OtherActor);
+        if (CurrentItem !=nullptr)
+        {
+        	UE_LOG(LogTemp, Warning, TEXT("nouvel Item"));
+        	bTouchItem = true;
+        }
+    }
 	CurrentSpotFood = Cast<ASpotFood>(OtherActor);
-	if (CurrentSpotFood != nullptr)
+	if(CurrentSpotFood != nullptr)
 	{
-		bHoldingSpot = true;
-		UE_LOG(LogTemp, Warning, TEXT("Spot"));
+		bTouchSpot = true;
 	}
+	
+	
 }
 
 void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
@@ -117,19 +120,11 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	CurrentItem = Cast<APickUp>(OtherActor);
-	if (CurrentItem != nullptr || CurrentSpotFood != nullptr)
+	if (CurrentSpotFood != nullptr)
 	{
-		bHoldingItem = false;
-		bHoldingSpot = false;
-		UE_LOG(LogTemp, Warning, TEXT("lache tout"));
-	}
-	/*if (!bTake)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("je ne tien riens donc je detruit"));
-		CurrentItem = nullptr;
 		CurrentSpotFood = nullptr;
-	}*/
+		bTouchSpot = false;
+	}
 }
 
 void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood)
@@ -141,7 +136,6 @@ void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood)
 		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
 		CurrentFood->SetIsPickUp(true);
-		bTake = true;
 		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
 		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
 		CurrentFood->SetActorRotation(FRotator(0,-45,0));
@@ -157,51 +151,73 @@ void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood)
 		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		CurrentFood->DetachRootComponentFromParent(true);
 		CurrentFood->SetIsPickUp(false);
-		bTake = false;
-		CurrentFood->SetActorLocation(GetActorLocation() +100* GetActorForwardVector()); 
+		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
 		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
 		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
 	}
 }
 
-void AMainCharacter::OnAction()
+void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood)
 {
-	if (CurrentItem != nullptr)
+	if ( CurrentFood != nullptr && CurrentSpot !=nullptr )
 	{
+		CurrentSpot->SetHaveFood(false);
+		CurrentFood->SetIsPickUp(true);
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));	}
+}
 
-		UE_LOG(LogTemp, Warning, TEXT("E + Food"));
-		if (CurrentItem->GetIsPickUP())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("lacher"));
-			ToggleItemDropDown(CurrentItem);
-		}
-		if (bHoldingItem)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("tenir"));
-			ToggleItemPickup(CurrentItem);
-		}
-	}else
+void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood)
+{
+	if ( CurrentFood != nullptr && CurrentSpot !=nullptr )
 	{
-		UE_LOG(LogTemp, Warning, TEXT("current item detruit"));
-
-	}
-	if (CurrentSpotFood != nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("E + Spot"));
-		if (CurrentSpotFood ->GetHaveFood())
-		{
-			ToggleItemDropDown(CurrentSpotFood->FoodPickUp);
-		}
-		else
-		{
-			ToggleItemPickup(CurrentSpotFood->FoodPickUp);
-		}
-	}else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Spot item detruit"));
-
+		CurrentSpot->SetHaveFood(true);
+		CurrentFood->DetachRootComponentFromParent(true);
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->SetIsPickUp(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
+		CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
+		CurrentFood->SetActorRotation(FRotator(0,0,0));
 	}
 }
+
+void AMainCharacter::OnAction()
+{
+	if (CurrentItem != nullptr && CurrentSpotFood == nullptr)
+	{
+		if (GetTake()) //drop Item
+		{
+			ToggleItemDropDown(CurrentItem);
+			SetTake(false);
+			CurrentItem = nullptr;
+			bTouchItem = false;
+		}
+		else if (bTouchItem && !GetTake() && !CurrentItem->GetIsPickUP()) //Pick up item
+		{
+			ToggleItemPickup(CurrentItem);
+			SetTake(true);
+		}
+	}
+	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
+	{
+		if (GetTake() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
+		{
+			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
+			SetTake(false);
+		}else if (!GetTake() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
+		{
+			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
+			SetTake(true);
+
+		}
+	}
+}
+
+//********************************** MOVE ************************************************//
+
 
 void AMainCharacter::MoveForward(float Value)
 {
@@ -266,3 +282,9 @@ bool AMainCharacter::GetTake()
 {
 	return bTake;
 }
+
+void AMainCharacter::SetTake(bool Take)
+{
+	bTake = Take;
+}
+

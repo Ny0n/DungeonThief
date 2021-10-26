@@ -30,8 +30,6 @@ ASpotFood::ASpotFood()
 void ASpotFood::BeginPlay()
 {
 	Super::BeginPlay();
-	BoxPutFood->OnComponentBeginOverlap.AddDynamic(this, &ASpotFood::OnBoxBeginOverlap);
-
 }
 
 bool ASpotFood::GetHaveFood()
@@ -56,7 +54,7 @@ FRotator ASpotFood::GetSpotFoodRotation()
 	Rotation = GetActorRotation();
 	return Rotation+BoxRotation;
 }
-
+/*
 void ASpotFood::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
@@ -70,11 +68,18 @@ void ASpotFood::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	{
 		if (!HaveFood && !FoodPickUp->GetIsPickUP())
 		{
-			FoodPickUp->SetActorLocation(this ->GetSpotFoodLocation());
+			FoodPickUp->MyMesh->SetEnableGravity(false);
+			FoodPickUp->MyMesh->SetSimulatePhysics(false);
+			FoodPickUp->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			
+			FoodPickUp->SetActorLocation(this ->GetSpotFoodLocation() + FVector(0,0,10));
+
+			FoodPickUp->SetActorScale3D(FVector(0.75,0.75,0.75));
+			FoodPickUp->SetActorRotation(FRotator(0,0,0));
 			SetHaveFood(true);
 		}
 	}
 	
 }
-
+*/
 

@@ -24,6 +24,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+
 public:
 
 	UPROPERTY(EditAnywhere)
@@ -32,6 +34,9 @@ public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	UBoxComponent* BoxPutFood;
 
+	UPROPERTY(EditAnywhere)
+	class APickUp* CurrentItem;
+	
 	UPROPERTY()
 	AGC_UE4CPPGameModeBase* GameModeBase;
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
 #include "GC_UE4CPP/Food/PickUp.h"
+#include "GC_UE4CPP/Food/SpotFood.h"
 #include "GC_UE4CPP/UI/FoodProgressBar.h"
 #include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "MainCharacter.generated.h"
@@ -79,7 +80,12 @@ protected:
 
 	void ToggleItemDropDown(APickUp* CurrentItem);
 
+	void ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
+
+	void ToggleItemDropDownSpot(ASpotFood* CurrentSpotFood, APickUp* CurrentItem);
+
 	bool GetTake();
+	void SetTake(bool Take);
 
 public:	
 	// Called every frame
@@ -93,8 +99,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	class ASpotFood* CurrentSpotFood;
 
-	bool bHoldingItem = false;
-	bool bHoldingSpot = false;
+	bool bTouchItem = false;
+	bool bTouchSpot = false;
 	bool bTake = false;
 	
 	FVector HoldingComp;

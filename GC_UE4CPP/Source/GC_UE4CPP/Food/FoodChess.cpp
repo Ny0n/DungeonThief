@@ -36,15 +36,27 @@ void AFoodChess::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		bool bFromSweep,
 		const FHitResult& SweepResult)
 {
-	APickUp* food = Cast<APickUp>(OtherActor);
+	CurrentItem = Cast<APickUp>(OtherActor);
 	
-	if (food != nullptr)
+	
+}
+
+void AFoodChess::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (CurrentItem != nullptr)
 	{
-		if (!food->GetIsPickUP())
+		if (!CurrentItem->GetIsPickUP())
 		{
-			food->Destroy();
+			CurrentItem->Destroy();
 			GameModeBase->AddFood();
+			CurrentItem = nullptr;
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("chess :: la food es tenu"));
+		}
+		
 	}
 }
 

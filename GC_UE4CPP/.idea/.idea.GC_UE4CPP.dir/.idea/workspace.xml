@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="792f3ff9-64dd-4065-a5b0-29576687c971" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Characters/MainCharacter/BP_MainCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Characters/MainCharacter/BP_MainCharacter.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/FoodChess.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/FoodChess.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/FoodChess.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/FoodChess.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/SpotFood.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/SpotFood.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/SpotFood.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/Food/SpotFood.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" afterDir="false" />
@@ -20,10 +21,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cpp" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1zNYDtMfYK3c3sbUntwYDMCYctp" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -116,6 +113,8 @@
       <workItem from="1635151608148" duration="6285000" />
       <workItem from="1635167412906" duration="4584000" />
       <workItem from="1635172281646" duration="1423000" />
+      <workItem from="1635233848336" duration="2274000" />
+      <workItem from="1635236493642" duration="4829000" />
     </task>
     <servers />
   </component>

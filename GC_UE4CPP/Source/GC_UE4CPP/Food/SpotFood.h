@@ -30,9 +30,6 @@ public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	UBoxComponent* BoxPutFood;
 	
-	UPROPERTY(EditAnywhere , BlueprintReadWrite)
-	APickUp* FoodPickUp;
-
 	
 	UFUNCTION()
 	bool GetHaveFood();
@@ -45,15 +42,7 @@ public:
 
 	UFUNCTION()
 	FRotator GetSpotFoodRotation();
-
 	
-	UFUNCTION()
-	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex,
-		bool bFromSweep,
-		const FHitResult& SweepResult);
 	
 private:
 	FVector BoxLocation;
