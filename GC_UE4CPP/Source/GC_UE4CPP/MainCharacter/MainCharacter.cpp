@@ -129,6 +129,7 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	{
 		bTouchSpot = false;
 		CurrentSpotFood = nullptr;
+		CurrentItem = nullptr;
 	}
 	
 }

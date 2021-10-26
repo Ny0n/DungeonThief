@@ -33,6 +33,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* staticTable;
 
+	void SpawnLeft();
+	void SpawnRight();
 
 	FVector RightLocation;
 	FVector LeftLocation;

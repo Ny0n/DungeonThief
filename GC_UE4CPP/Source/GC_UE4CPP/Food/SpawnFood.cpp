@@ -40,13 +40,17 @@ ASpawnFood::ASpawnFood()
 void ASpawnFood::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("SPawn"));
+	UE_LOG(LogTemp, Warning, TEXT("SPawn"));	
+	SpawnLeft();
+	SpawnRight();
+}
 
-	const FVector Location = GetActorLocation();
-	const FRotator Rotation = GetActorRotation();
-	
-	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,Location+ RightLocation, Rotation + RightRotation);
-	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,Location+ LeftLocation, Rotation + LeftRotation);
-
+void ASpawnFood::SpawnLeft()
+{
+	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,GetActorLocation()+ LeftLocation, GetActorRotation() + LeftRotation);
+}
+void ASpawnFood::SpawnRight()
+{
+	GetWorld()->SpawnActor<AActor>(ActorTOSpawn,GetActorLocation()+ RightLocation, GetActorRotation() + RightRotation);
 }
 
