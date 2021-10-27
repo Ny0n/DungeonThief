@@ -98,7 +98,7 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	if(!GetTake()) 
+	if(!IsCarrying()) 
     {
     	CurrentItem = Cast<APickUp>(OtherActor);
         if (CurrentItem !=nullptr)
@@ -129,8 +129,8 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	{
 		bTouchSpot = false;
 		CurrentSpotFood = nullptr;
-		if(!GetTake())
-		CurrentItem = nullptr;
+		if (!IsCarrying())
+			CurrentItem = nullptr;
 	}
 	
 }
@@ -189,7 +189,7 @@ void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* Cur
 	CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
 	CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
 	CurrentFood->SetActorRotation(FRotator(0,0,0));
-	CurrentSpotFood = CurrentSpot; 
+	CurrentSpotFood=CurrentSpot;
 }
 
 void AMainCharacter::OnAction()
@@ -197,30 +197,30 @@ void AMainCharacter::OnAction()
 	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
 	{
 
-		if (GetTake() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
+		if (IsCarrying() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
 		{
 			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
-			SetTake(false);
+			SetIsCarrying(false);
 			
-		}else if (!GetTake() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
+		}else if (!IsCarrying() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
 		{
 			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
-			SetTake(true);
+			SetIsCarrying(true);
 
 		}
 	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)
 	{
-		if (GetTake()) //drop Item
+		if (IsCarrying()) //drop Item
 		{
 			ToggleItemDropDown(CurrentItem);
-			SetTake(false);
+			SetIsCarrying(false);
 			CurrentItem = nullptr;
 			bTouchItem = false;
 		}
-		else if (bTouchItem && !GetTake() && !CurrentItem->GetIsPickUP()) //Pick up item
+		else if (bTouchItem && !IsCarrying() && !CurrentItem->GetIsPickUP()) //Pick up item
 		{
 			ToggleItemPickup(CurrentItem);
-			SetTake(true);
+			SetIsCarrying(true);
 		}
 	}
 	
@@ -231,7 +231,7 @@ void AMainCharacter::OnAction()
 
 void AMainCharacter::MoveForward(float Value)
 {
-	if (GetTake())
+	if (IsCarrying())
 	{
 		Value = Value / 2.0;
 	}
@@ -245,7 +245,7 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::MoveRight(float Value)
 {
-	if (GetTake())
+	if (IsCarrying())
 	{
 		Value = Value / 2.0;
 	}
@@ -288,13 +288,13 @@ void AMainCharacter::Num3Pressed()
 	GameModeBase->AddFood();
 }
 
-bool AMainCharacter::GetTake()
+bool AMainCharacter::IsCarrying()
 {
-	return bTake;
+	return bCarrying;
 }
 
-void AMainCharacter::SetTake(bool Take)
+void AMainCharacter::SetIsCarrying(bool Value)
 {
-	bTake = Take;
+	bCarrying = Value;
 }
 

@@ -3,27 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainCharacter.h"
+#include "AIEnemyCharacter.h"
 #include "Animation/AnimInstance.h"
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
-#include "KnightAnimation.generated.h"
+#include "GoblinAnim.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UKnightAnimation : public UAnimInstance
+class GC_UE4CPP_API UGoblinAnim : public UAnimInstance
 {
 	GENERATED_BODY()
-
+	
 	UPROPERTY()
 	AGC_UE4CPPGameModeBase* GameModeBase;
 	
 	UPROPERTY()
-	AMainCharacter* MainCharacter;
+	AAIEnemyCharacter* Character;
 
 public:
-	UKnightAnimation();
+	UGoblinAnim();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed = 0.0;

@@ -1,21 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KnightAnimation.h"
+#include "GoblinAnim.h"
 
-UKnightAnimation::UKnightAnimation()
+UGoblinAnim::UGoblinAnim()
 {
 }
 
-inline void UKnightAnimation::NativeInitializeAnimation()
+inline void UGoblinAnim::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 	
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-	MainCharacter = Cast<AMainCharacter>(TryGetPawnOwner());
+	Character = Cast<AAIEnemyCharacter>(TryGetPawnOwner());
 }
 
-void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
+void UGoblinAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
@@ -25,11 +25,11 @@ void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
 		Speed = OwningActor->GetVelocity().Size();
 	}
 
-	if (IsValid(GameModeBase) && IsValid(MainCharacter))
+	if (IsValid(GameModeBase) && IsValid(Character))
 	{
 		bVictory = GameModeBase->bVictory;
 		bDefeat = GameModeBase->bDefeat;
 		bPlaying = GameModeBase->bPlaying;
-		bCarrying = MainCharacter->bCarrying;
+		// bCarrying = Character->bCarrying;
 	}
 }

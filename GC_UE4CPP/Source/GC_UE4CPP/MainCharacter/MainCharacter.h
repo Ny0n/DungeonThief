@@ -84,8 +84,8 @@ protected:
 
 	void ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
-	bool GetTake();
-	void SetTake(bool Take);
+	bool IsCarrying();
+	void SetIsCarrying(bool Take);
 
 public:	
 	// Called every frame
@@ -101,7 +101,7 @@ public:
 
 	bool bTouchItem = false;
 	bool bTouchSpot = false;
-	bool bTake = false;
+	bool bCarrying = false;
 	
 	FVector HoldingComp;
 

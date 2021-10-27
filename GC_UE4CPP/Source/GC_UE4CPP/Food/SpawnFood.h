@@ -43,7 +43,7 @@ public:
 			const FHitResult& SweepResult);
 	
 	void Spawn();
-	float HaveFood = false;
+	bool HaveFood = false;
 	bool GetHaveFood();
 	void SetHaveFood(bool Food);
 	

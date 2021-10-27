@@ -51,7 +51,7 @@ UFUNCTION()
 			const FHitResult& SweepResult)
 {
 	FoodSpawn = Cast<APickUp>(OtherActor);
-	if (FoodSpawn !=nullptr && !FoodSpawn->IsPickUp())
+	if (FoodSpawn !=nullptr && !FoodSpawn->IsPickUp)
 	{
 		FoodSpawn->MyMesh->SetEnableGravity(false);
 		FoodSpawn->MyMesh->SetSimulatePhysics(false);
