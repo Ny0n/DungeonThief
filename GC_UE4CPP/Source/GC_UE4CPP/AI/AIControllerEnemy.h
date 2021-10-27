@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AISenseConfig_Sight.h"
 #include "AIControllerEnemy.generated.h"
 
 /**
@@ -20,4 +21,16 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BTAsset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAIPerceptionComponent* AIPerception;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAISenseConfig_Sight* SightConfig;
+	
+private:
+	UFUNCTION()
+	void OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus);
+
+	void SetupPerceptionSystem();
 };

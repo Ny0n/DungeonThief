@@ -9,6 +9,7 @@
 #include "GC_UE4CPP/Food/SpotFood.h"
 #include "GC_UE4CPP/UI/FoodProgressBar.h"
 #include "GC_UE4CPP/UI/InterfaceCreation.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -86,6 +87,10 @@ protected:
 
 	bool IsCarrying();
 	void SetIsCarrying(bool Take);
+
+	UPROPERTY()
+	UAIPerceptionStimuliSourceComponent* StimulusComponent;
+	void SetupStimuli();
 
 public:	
 	// Called every frame

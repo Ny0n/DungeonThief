@@ -10,8 +10,10 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
+#include "GC_UE4CPP/AI/AIEnemyCharacter.h"
 #include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Perception/AISense_Sight.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -44,6 +46,15 @@ AMainCharacter::AMainCharacter()
 
 	TriggerCapsule->OnComponentBeginOverlap.AddDynamic(this, &AMainCharacter::OnOverlapBegin);
 	TriggerCapsule->OnComponentEndOverlap.AddDynamic(this, &AMainCharacter::OnOverlapEnd);
+
+	SetupStimuli();
+}
+
+void AMainCharacter::SetupStimuli()
+{
+	StimulusComponent = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("Stimulus");
+	StimulusComponent->RegisterForSense(TSubclassOf<UAISense_Sight>());
+	StimulusComponent->RegisterWithPerceptionSystem();
 }
 
 // Called when the game starts or when spawned
@@ -114,9 +125,9 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 			bTouchSpot = true;
 		}
 	}
-	
-	
-	
+
+	if (Cast<AAIEnemyCharacter>(OtherActor))
+		GameModeBase->Defeat();
 }
 
 void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
@@ -297,4 +308,3 @@ void AMainCharacter::SetIsCarrying(bool Value)
 {
 	bCarrying = Value;
 }
-
