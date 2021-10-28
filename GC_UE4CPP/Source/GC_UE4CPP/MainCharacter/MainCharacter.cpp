@@ -386,7 +386,7 @@ void AMainCharacter::TurnAtRate(float Rate)
 {
 	if (!IsSitting())
 	{
-		AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+		AddControllerYawInput((Rate/4) * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
 	}
 }
 
@@ -394,7 +394,7 @@ void AMainCharacter::LookUpAtRate(float Rate)
 {
 	if (!IsSitting())
 	{
-		AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+		AddControllerPitchInput((Rate/4) * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
 	}
 }
 
