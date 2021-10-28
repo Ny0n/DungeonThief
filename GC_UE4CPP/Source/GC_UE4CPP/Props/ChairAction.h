@@ -4,45 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
-#include "PickUp.generated.h"
+#include "ChairAction.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API APickUp : public AActor
+class GC_UE4CPP_API AChairAction : public AActor
 {
 	GENERATED_BODY()
-
 	
 public:	
 	// Sets default values for this actor's properties
-	APickUp();
+	AChairAction();
 
-protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-
-
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* MyMesh;
+	UStaticMeshComponent* MyMesh;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	 UBoxComponent* BoxMesh;
+	UBoxComponent* BoxMesh;
+
+     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* Camera;
+
 	
-	
-
-	UFUNCTION()
-		void PickUp();
-
-	bool IsPickUp = false;
-
-	UFUNCTION()
-		bool GetIsPickUP();
-
-	UFUNCTION()
-		void SetIsPickUp(bool BPickUp);
-	
-
 };

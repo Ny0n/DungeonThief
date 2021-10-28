@@ -32,6 +32,8 @@ AMainCharacter::AMainCharacter()
 	Camera->SetupAttachment(BoomArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 
+	
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -72,6 +74,7 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 	Start = Camera->GetComponentLocation();
 	ForwardVector = Camera->GetForwardVector();
 	End = ((ForwardVector * 200.f) + Start);
@@ -94,6 +97,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
+	
+	
 
 	// Bind action event
 	PlayerInputComponent->BindAction("Action_E", IE_Pressed, this, &AMainCharacter::OnAction);
@@ -106,6 +111,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 }
 
 //*********************************** Pick up ***********************************************//
+
+//**************** Overlap ****************//
 
 void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
@@ -133,6 +140,14 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	if (Cast<AAIEnemyCharacter>(OtherActor))
 		GameModeBase->Defeat();
+
+	CurrentChair = Cast<AChairAction>(OtherActor);
+	if(CurrentChair != nullptr)
+	{
+		bChair = true;
+		UE_LOG(LogTemp, Warning, TEXT("chair"));
+
+	}	
 }
 
 void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
@@ -146,73 +161,34 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		bTouchSpot = false;
 		CurrentSpotFood = nullptr;
 		if (!IsCarrying())
+		{
+			bTouchItem = false;
 			CurrentItem = nullptr;
+		}
 	}
-	
-}
-
-void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
-{
-	if (CurrentFood != nullptr)
+	if(!IsCarrying())
 	{
-		CurrentFood->MyMesh->SetEnableGravity(false);
-		CurrentFood->MyMesh->SetSimulatePhysics(false);
-		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		CurrentFood->SetIsPickUp(true);
-		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
-		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
-		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+		CurrentItem = Cast<APickUp>(OtherActor);
 	}
-}
-
-void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
-{
-	if (CurrentFood != nullptr)
+	if (CurrentItem != nullptr)
 	{
-		CurrentFood->MyMesh->SetEnableGravity(true);
-		CurrentFood->MyMesh->SetSimulatePhysics(true);
-		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CurrentFood->DetachRootComponentFromParent(true);
-		CurrentFood->SetIsPickUp(false);
-		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
-		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
-		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
+		if (!CurrentItem->GetIsPickUP())
+		{
+			bTouchItem = false;
+		}
 	}
-}
 
-void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
-{
-	CurrentSpot->SetHaveFood(false);
-	CurrentFood->SetIsPickUp(true);
-	CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-	CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
-	CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
-	CurrentFood->SetActorRotation(FRotator(0,-45,0));	
+	if(Cast<AChairAction>(OtherActor))
+		bChair = false;
+}
 	
-}
 
-void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Put the food on the spot
-{
-	CurrentFood->DetachRootComponentFromParent(true);
-
-	CurrentSpot->SetHaveFood(true);
-	CurrentFood->SetIsPickUp(false);
-	
-	CurrentFood->MyMesh->SetEnableGravity(false);
-	CurrentFood->MyMesh->SetSimulatePhysics(false);
-	CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
-	CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
-	CurrentFood->SetActorRotation(FRotator(0,0,0));
-	CurrentSpotFood=CurrentSpot;
-}
+//**************** Action press E ****************//
 
 void AMainCharacter::OnAction()
 {
 	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
 	{
-
 		if (IsCarrying() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
 		{
 			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
@@ -222,11 +198,10 @@ void AMainCharacter::OnAction()
 		{
 			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
 			SetIsCarrying(true);
-
 		}
-	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)
+	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)  
 	{
-		if (IsCarrying()) //drop Item
+		if (IsCarrying())                                 // drop Item
 		{
 			ToggleItemDropDown(CurrentItem);
 			SetIsCarrying(false);
@@ -239,7 +214,101 @@ void AMainCharacter::OnAction()
 			SetIsCarrying(true);
 		}
 	}
+	if (bChair && !IsCarrying() && !IsSitting())
+	{
+		SitDownCharacter();
+	}else if (IsSitting())
+	{
+		SitUpCharacter();
+	}
 	
+}
+
+//**************** Pick up and down ****************//
+
+void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
+{
+	if (CurrentFood != nullptr)
+	{
+		CurrentFood->SetIsPickUp(true);
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+	}
+}
+
+void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
+{
+	if (CurrentFood != nullptr)
+	{
+		CurrentFood->SetIsPickUp(false);
+		CurrentFood->MyMesh->SetEnableGravity(true);
+		CurrentFood->MyMesh->SetSimulatePhysics(true);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CurrentFood->DetachRootComponentFromParent(true);
+		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
+		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
+		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
+	}
+}
+
+void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
+{
+	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
+	{
+
+		CurrentSpot->SetHaveFood(false);
+		CurrentFood->SetIsPickUp(true);
+		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+	}
+}
+
+void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Put the food on the spot
+{
+	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
+	{
+		CurrentFood->DetachRootComponentFromParent(true);
+
+		CurrentSpot->SetHaveFood(true);
+		CurrentFood->SetIsPickUp(false);
+	
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
+		CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
+		CurrentFood->SetActorRotation(FRotator(0,0,0));
+		CurrentSpotFood=CurrentSpot;
+	}
+}
+
+//**************** Sit Down ****************//
+
+void AMainCharacter::SitDownCharacter()
+{
+	if(CurrentChair != nullptr && !IsSitting())
+	{
+		this -> SetActorLocation( CurrentChair->GetActorLocation() + FVector(0,50,100) );
+		this -> SetActorRotation( FRotator(0,90,0));
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CurrentChair,1.0f);
+		SetIsSitting(true);
+		
+	}
+}
+void AMainCharacter::SitUpCharacter()
+{
+	if(IsSitting())
+	{
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this,0.5f);
+		SetIsSitting(false);
+	}
 }
 
 //********************************** MOVE ************************************************//
@@ -247,40 +316,52 @@ void AMainCharacter::OnAction()
 
 void AMainCharacter::MoveForward(float Value)
 {
-	if (IsCarrying())
+	if (!IsSitting())
 	{
-		Value = Value / 2.0;
-	}
-	if (Controller != nullptr && Value != 0.0) {
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator Yaw(0, Rotation.Yaw, 0);
-		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
-		AddMovementInput(direction, Value);
+		if (IsCarrying())
+		{
+			Value = Value / 2.0;
+		}
+		if (Controller != nullptr && Value != 0.0) {
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator Yaw(0, Rotation.Yaw, 0);
+			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
+			AddMovementInput(direction, Value);
+		}
 	}
 }
 
 void AMainCharacter::MoveRight(float Value)
 {
-	if (IsCarrying())
+	if (!IsSitting())
 	{
-		Value = Value / 2.0;
-	}
-	if (Controller != nullptr && Value != 0.0) {
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator Yaw(0, Rotation.Yaw, 0);
-		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
-		AddMovementInput(direction, Value);
+		if (IsCarrying())
+		{
+			Value = Value / 2.0;
+		}
+		if (Controller != nullptr && Value != 0.0) {
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator Yaw(0, Rotation.Yaw, 0);
+			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
+			AddMovementInput(direction, Value);
+		}
 	}
 }
 
 void AMainCharacter::TurnAtRate(float Rate)
 {
-	AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	if (!IsSitting())
+	{
+		AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	}
 }
 
 void AMainCharacter::LookUpAtRate(float Rate)
 {
-	AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	if (!IsSitting())
+	{
+		AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	}
 }
 
 void AMainCharacter::ZoomInOut(float Value)
@@ -312,4 +393,13 @@ bool AMainCharacter::IsCarrying()
 void AMainCharacter::SetIsCarrying(bool Value)
 {
 	bCarrying = Value;
+}
+bool AMainCharacter::IsSitting()
+{
+	return bSitDown;
+}
+
+void AMainCharacter::SetIsSitting(bool Value)
+{
+	bSitDown = Value;
 }

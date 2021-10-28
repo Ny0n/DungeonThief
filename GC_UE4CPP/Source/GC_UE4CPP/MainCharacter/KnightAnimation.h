@@ -39,6 +39,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCarrying = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bSitting = false;
 	
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
