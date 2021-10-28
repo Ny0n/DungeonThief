@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="792f3ff9-64dd-4065-a5b0-29576687c971" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Characters/MainCharacter/ABP_KnightAnimation.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Characters/MainCharacter/ABP_KnightAnimation.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Quaternius/Characters/Ultimate_Animated_Characters_Pack/Knight_Male/Knight_Male_Anim_CharacterArmature_Walk_Carry.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Quaternius/Characters/Ultimate_Animated_Characters_Pack/Knight_Male/Knight_Male_Anim_CharacterArmature_Walk_Carry.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/KnightAnimation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/KnightAnimation.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/KnightAnimation.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/KnightAnimation.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +122,7 @@
       <workItem from="1635242566770" duration="6719000" />
       <workItem from="1635249809795" duration="2813000" />
       <workItem from="1635406400841" duration="4351000" />
+      <workItem from="1635427157469" duration="2448000" />
     </task>
     <servers />
   </component>

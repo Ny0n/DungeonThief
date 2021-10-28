@@ -127,6 +127,7 @@ public:
 	bool bCarrying = false;
 	bool bSitDown = false;
 	bool bChair = false;
+	bool bMove = false;
 	
 	
 	FVector HoldingComp;

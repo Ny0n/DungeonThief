@@ -139,8 +139,16 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	}
 
 	if (Cast<AAIEnemyCharacter>(OtherActor))
+	{
+		if (IsCarrying() && CurrentItem != nullptr)
+		{
+			ToggleItemDropDown(CurrentItem);
+			SetIsCarrying(false);
+			CurrentItem = nullptr;
+			bTouchItem = false;
+		}
 		GameModeBase->Defeat();
-
+	}
 	CurrentChair = Cast<AChairAction>(OtherActor);
 	if(CurrentChair != nullptr)
 	{
@@ -326,6 +334,13 @@ void AMainCharacter::MoveForward(float Value)
 			const FRotator Rotation = Controller->GetControlRotation();
 			const FRotator Yaw(0, Rotation.Yaw, 0);
 			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
+			if (Value == 0)
+			{
+				bMove = true;
+			}else
+			{
+				bMove=false;
+			}
 			AddMovementInput(direction, Value);
 		}
 	}
@@ -343,6 +358,13 @@ void AMainCharacter::MoveRight(float Value)
 			const FRotator Rotation = Controller->GetControlRotation();
 			const FRotator Yaw(0, Rotation.Yaw, 0);
 			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
+			if (Value == 0)
+			{
+				bMove = true;
+			}else
+			{
+				bMove=false;
+			}
 			AddMovementInput(direction, Value);
 		}
 	}
