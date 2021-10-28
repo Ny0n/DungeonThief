@@ -31,7 +31,7 @@ void AChairAction::BeginPlay()
 {
 	Super::BeginPlay();
 	Camera->SetRelativeLocation(FVector(0,500,300));
-	Camera -> SetRelativeRotation(FRotator(0,-20,-90));
+	Camera -> SetRelativeRotation(FRotator(-30,-90,0));
 	
 }
 

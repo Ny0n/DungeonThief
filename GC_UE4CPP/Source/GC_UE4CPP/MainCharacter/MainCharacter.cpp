@@ -32,6 +32,8 @@ AMainCharacter::AMainCharacter()
 	Camera->SetupAttachment(BoomArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 
+	
+
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
@@ -215,11 +217,9 @@ void AMainCharacter::OnAction()
 	if (bChair && !IsCarrying() && !IsSitting())
 	{
 		SitDownCharacter();
-		UE_LOG(LogTemp, Warning, TEXT("e + chair"));
 	}else if (IsSitting())
 	{
 		SitUpCharacter();
-		UE_LOG(LogTemp, Warning, TEXT("e + chair fin"));
 	}
 	
 }
@@ -295,9 +295,9 @@ void AMainCharacter::SitDownCharacter()
 {
 	if(CurrentChair != nullptr && !IsSitting())
 	{
-		this -> SetActorLocation( CurrentChair->GetActorLocation() + FVector(0,75,100) );
+		this -> SetActorLocation( CurrentChair->GetActorLocation() + FVector(0,50,100) );
 		this -> SetActorRotation( FRotator(0,90,0));
-		//GetWorld()->GetFirstPlayerController()->ServerCamera(GetViewModeName());
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CurrentChair,1.0f);
 		SetIsSitting(true);
 		
 	}
@@ -306,6 +306,7 @@ void AMainCharacter::SitUpCharacter()
 {
 	if(IsSitting())
 	{
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this,0.5f);
 		SetIsSitting(false);
 	}
 }

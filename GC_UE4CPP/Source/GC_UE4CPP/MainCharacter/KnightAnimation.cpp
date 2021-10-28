@@ -31,5 +31,6 @@ void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
 		bDefeat = GameModeBase->bDefeat;
 		bPlaying = GameModeBase->bPlaying;
 		bCarrying = MainCharacter->bCarrying;
+		bSitting = MainCharacter -> bSitDown;
 	}
 }

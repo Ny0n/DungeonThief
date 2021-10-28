@@ -25,8 +25,8 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UBoxComponent* BoxMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
-	
+
 	
 };

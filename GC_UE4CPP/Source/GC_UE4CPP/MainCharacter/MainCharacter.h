@@ -22,7 +22,10 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 		class USpringArmComponent* BoomArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* Camera;
+	class UCameraComponent* Camera;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* CameraChair;
 
 	UPROPERTY(EditAnywhere)
 	float CameraTurnRate = 45;
