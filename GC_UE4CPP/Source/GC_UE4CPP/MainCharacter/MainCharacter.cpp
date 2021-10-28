@@ -186,8 +186,14 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		}
 	}
 
-	if(Cast<AChairAction>(OtherActor))
-		bChair = false;
+	if(IsSitting())
+	{
+		CurrentChair = Cast<AChairAction>(OtherActor);
+		if (CurrentChair != nullptr)
+		{
+			bChair = false;
+		}
+	}
 }
 	
 
@@ -222,13 +228,19 @@ void AMainCharacter::OnAction()
 			SetIsCarrying(true);
 		}
 	}
-	if (bChair && !IsCarrying() && !IsSitting())
+	if (CurrentChair != nullptr)
 	{
-		SitDownCharacter();
-	}else if (IsSitting())
-	{
-		SitUpCharacter();
+		if (bChair && !IsCarrying() && !IsSitting())
+		{
+			SitDownCharacter();
+			CurrentChair->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		}else if (IsSitting())
+		{
+			SitUpCharacter();
+			CurrentChair->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		}
 	}
+	
 	
 }
 
@@ -303,7 +315,7 @@ void AMainCharacter::SitDownCharacter()
 {
 	if(CurrentChair != nullptr && !IsSitting())
 	{
-		this -> SetActorLocation( CurrentChair->GetActorLocation() + FVector(0,50,100) );
+		this -> SetActorLocation( CurrentChair->GetActorLocation()+ FVector(0,50,130) );
 		this -> SetActorRotation( FRotator(0,90,0));
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CurrentChair,1.0f);
 		SetIsSitting(true);
