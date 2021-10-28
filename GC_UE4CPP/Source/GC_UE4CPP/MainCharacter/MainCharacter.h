@@ -28,7 +28,7 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 	class UCameraComponent* CameraChair;
 
 	UPROPERTY(EditAnywhere)
-	float CameraTurnRate = 5;
+	float CameraTurnRate = 150;
 
 	UPROPERTY(EditAnywhere)
 	float ZoomRate = 25;
@@ -72,6 +72,7 @@ public:
 	void SitDownCharacter();
 	void SitUpCharacter();
 
+	void ToggleItemDropDown(APickUp* CurrentFood);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -91,9 +92,7 @@ protected:
 
 	// toggle holding item pickup
 	void ToggleItemPickup(APickUp* CurrentFood);
-
-	void ToggleItemDropDown(APickUp* CurrentFood);
-
+	
 	void ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
 	void ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);

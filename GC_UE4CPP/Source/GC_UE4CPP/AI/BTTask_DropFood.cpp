@@ -4,6 +4,8 @@
 #include "BTTask_DropFood.h"
 
 #include "AIControllerEnemy.h"
+#include "BlackboardKeys.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTTask_DropFood::UBTTask_DropFood(const FObjectInitializer& ObjectInitializer)
 {
@@ -14,9 +16,12 @@ EBTNodeResult::Type UBTTask_DropFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	AAIControllerEnemy* Controller = Cast<AAIControllerEnemy>(OwnerComp.GetAIOwner());
 	AAIEnemyCharacter* NPC = Cast<AAIEnemyCharacter>(Controller->GetPawn());
+
+	// before dropping the food, we keep a ref to it
+	Controller->GetBlackboardComponent()->SetValueAsObject(BBKeys::DroppedFood, NPC->FoodActor);
 	
 	// drop food
-	NPC->DropFood(); // UPDATE DroppedFood BB KEY // DISABLE COLLISION AVEC FOOD
+	NPC->DropFood();
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return Super::ExecuteTask(OwnerComp, NodeMemory);

@@ -5,6 +5,7 @@
 #include "GameFramework/HUD.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "MainCharacter/MainCharacter.h"
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
@@ -74,7 +75,7 @@ void AGC_UE4CPPGameModeBase::SpawnAI()
 	ActiveAI = ActiveAI + 1;
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = this;
-	FRotator Rotator;
+	FRotator Rotator = ActorReferencer->EditDoor->GetActorRotation();
 	AAIEnemyCharacter* aiEnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyCharacter, ActorReferencer->EditDoor->GetActorLocation(), Rotator, SpawnParameters);
 
 	if (FoodNb < MaxFoodInGame)
@@ -109,6 +110,11 @@ void AGC_UE4CPPGameModeBase::Victory()
 	bPlaying = false;
 
 	HUDBase->ShowEndHUD(true);
+
+	// drop the player's food
+	AMainCharacter* Player = Cast<AMainCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (Player != nullptr && Player->bCarrying)
+		Player->ToggleItemDropDown(Player->CurrentItem);
 }
 
 void AGC_UE4CPPGameModeBase::Defeat()
@@ -118,6 +124,11 @@ void AGC_UE4CPPGameModeBase::Defeat()
 	bPlaying = false;
 
 	HUDBase->ShowEndHUD(false);
+
+	// drop the player's food
+	AMainCharacter* Player = Cast<AMainCharacter>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	if (Player != nullptr && Player->bCarrying)
+		Player->ToggleItemDropDown(Player->CurrentItem);
 }
 
 void AGC_UE4CPPGameModeBase::Play()

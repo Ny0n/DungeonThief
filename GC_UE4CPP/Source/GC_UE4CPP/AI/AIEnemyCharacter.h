@@ -37,4 +37,5 @@ public:
 	void CreateAndAttachFood();
 	void DropFoodOnSpot(ASpotFood* TargetSpot);
 	void DropFood();
+	void PickupFood(APickUp* Food);
 };

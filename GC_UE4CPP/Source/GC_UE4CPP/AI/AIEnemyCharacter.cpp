@@ -43,7 +43,7 @@ void AAIEnemyCharacter::CreateAndAttachFood() //Pick up item
 		FoodActor->SetActorRotation(FRotator(0,-45,0));
 		
 		bCarrying = true;
-		// GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed/2.0f;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed/2.0f;
 	}
 }
 
@@ -83,5 +83,24 @@ void AAIEnemyCharacter::DropFood() // Drop the food in the world
 		
 		bCarrying = false;
 		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed*2.0f;
+	}
+}
+
+void AAIEnemyCharacter::PickupFood(APickUp* Food) //Pick up item
+{
+	if (Food != nullptr)
+	{
+		FoodActor = Food;
+		FoodActor->SetIsPickUp(true);
+		FoodActor->MyMesh->SetEnableGravity(false);
+		FoodActor->MyMesh->SetSimulatePhysics(false);
+		FoodActor->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		FoodActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform);
+		FoodActor->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		FoodActor->SetActorScale3D(FVector(0.25,0.25,0.25));
+		FoodActor->SetActorRotation(FRotator(0,-45,0));
+		
+		bCarrying = true;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed/2.0f;
 	}
 }
