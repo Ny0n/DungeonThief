@@ -7,6 +7,7 @@
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
 #include "GC_UE4CPP/Food/PickUp.h"
 #include "GC_UE4CPP/Food/SpotFood.h"
+#include "GC_UE4CPP/Props/ChairAction.h"
 #include "GC_UE4CPP/UI/FoodProgressBar.h"
 #include "GC_UE4CPP/UI/InterfaceCreation.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
@@ -60,6 +61,15 @@ public:
 	void Num2Pressed();
 	void Num3Pressed();
 
+	bool IsCarrying();
+	void SetIsCarrying(bool Take);
+	bool IsSitting();
+	void SetIsSitting(bool Take);
+
+	void SitDownCharacter();
+	void SitUpCharacter();
+
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -85,18 +95,19 @@ protected:
 
 	void ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
-	bool IsCarrying();
-	void SetIsCarrying(bool Take);
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	
 
-	UPROPERTY()
-	UAIPerceptionStimuliSourceComponent* StimulusComponent;
+	
 	void SetupStimuli();
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 
+	UPROPERTY()
+	UAIPerceptionStimuliSourceComponent* StimulusComponent;
+	
 	// Called to bind functionality to input
 	UPROPERTY(EditAnywhere)
 	class APickUp* CurrentItem;
@@ -104,9 +115,16 @@ public:
 	UPROPERTY(EditAnywhere)
 	class ASpotFood* CurrentSpotFood;
 
+	UPROPERTY(EditAnywhere)
+	class AChairAction* CurrentChair;
+
+
 	bool bTouchItem = false;
 	bool bTouchSpot = false;
 	bool bCarrying = false;
+	bool bSitDown = false;
+	bool bChair = false;
+	
 	
 	FVector HoldingComp;
 

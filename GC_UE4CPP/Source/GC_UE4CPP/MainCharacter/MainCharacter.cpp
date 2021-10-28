@@ -72,6 +72,7 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 	Start = Camera->GetComponentLocation();
 	ForwardVector = Camera->GetForwardVector();
 	End = ((ForwardVector * 200.f) + Start);
@@ -94,6 +95,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
+	
+	
 
 	// Bind action event
 	PlayerInputComponent->BindAction("Action_E", IE_Pressed, this, &AMainCharacter::OnAction);
@@ -135,6 +138,14 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	if (Cast<AAIEnemyCharacter>(OtherActor))
 		GameModeBase->Defeat();
+
+	CurrentChair = Cast<AChairAction>(OtherActor);
+	if(CurrentChair != nullptr)
+	{
+		bChair = true;
+		UE_LOG(LogTemp, Warning, TEXT("chair"));
+
+	}	
 }
 
 void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
@@ -164,6 +175,9 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 			bTouchItem = false;
 		}
 	}
+
+	if(Cast<AChairAction>(OtherActor))
+		bChair = false;
 }
 	
 
@@ -198,6 +212,16 @@ void AMainCharacter::OnAction()
 			SetIsCarrying(true);
 		}
 	}
+	if (bChair && !IsCarrying() && !IsSitting())
+	{
+		SitDownCharacter();
+		UE_LOG(LogTemp, Warning, TEXT("e + chair"));
+	}else if (IsSitting())
+	{
+		SitUpCharacter();
+		UE_LOG(LogTemp, Warning, TEXT("e + chair fin"));
+	}
+	
 }
 
 //**************** Pick up and down ****************//
@@ -265,47 +289,78 @@ void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* Cur
 	}
 }
 
+//**************** Sit Down ****************//
 
+void AMainCharacter::SitDownCharacter()
+{
+	if(CurrentChair != nullptr && !IsSitting())
+	{
+		this -> SetActorLocation( CurrentChair->GetActorLocation() + FVector(0,75,100) );
+		this -> SetActorRotation( FRotator(0,90,0));
+		//GetWorld()->GetFirstPlayerController()->ServerCamera(GetViewModeName());
+		SetIsSitting(true);
+		
+	}
+}
+void AMainCharacter::SitUpCharacter()
+{
+	if(IsSitting())
+	{
+		SetIsSitting(false);
+	}
+}
 
 //********************************** MOVE ************************************************//
 
 
 void AMainCharacter::MoveForward(float Value)
 {
-	if (IsCarrying())
+	if (!IsSitting())
 	{
-		Value = Value / 2.0;
-	}
-	if (Controller != nullptr && Value != 0.0) {
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator Yaw(0, Rotation.Yaw, 0);
-		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
-		AddMovementInput(direction, Value);
+		if (IsCarrying())
+		{
+			Value = Value / 2.0;
+		}
+		if (Controller != nullptr && Value != 0.0) {
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator Yaw(0, Rotation.Yaw, 0);
+			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::X);
+			AddMovementInput(direction, Value);
+		}
 	}
 }
 
 void AMainCharacter::MoveRight(float Value)
 {
-	if (IsCarrying())
+	if (!IsSitting())
 	{
-		Value = Value / 2.0;
-	}
-	if (Controller != nullptr && Value != 0.0) {
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator Yaw(0, Rotation.Yaw, 0);
-		const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
-		AddMovementInput(direction, Value);
+		if (IsCarrying())
+		{
+			Value = Value / 2.0;
+		}
+		if (Controller != nullptr && Value != 0.0) {
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator Yaw(0, Rotation.Yaw, 0);
+			const FVector direction = FRotationMatrix(Yaw).GetUnitAxis(EAxis::Y);
+			AddMovementInput(direction, Value);
+		}
 	}
 }
 
 void AMainCharacter::TurnAtRate(float Rate)
 {
-	AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	if (!IsSitting())
+	{
+		AddControllerYawInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	}
 }
 
 void AMainCharacter::LookUpAtRate(float Rate)
 {
-	AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	if (!IsSitting())
+	{
+		AddControllerPitchInput(Rate * GetWorld()->GetDeltaSeconds() * CameraTurnRate);
+	}
 }
 
 void AMainCharacter::ZoomInOut(float Value)
@@ -337,4 +392,13 @@ bool AMainCharacter::IsCarrying()
 void AMainCharacter::SetIsCarrying(bool Value)
 {
 	bCarrying = Value;
+}
+bool AMainCharacter::IsSitting()
+{
+	return bSitDown;
+}
+
+void AMainCharacter::SetIsSitting(bool Value)
+{
+	bSitDown = Value;
 }

@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="792f3ff9-64dd-4065-a5b0-29576687c971" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GC_UE4CPP.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Environment/Food/BP_PickUp.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Environment/Food/BP_PickUp.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GC_UE4CPP/Maps/niveau.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/GC_UE4CPP/MainCharacter/MainCharacter.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +115,7 @@
       <workItem from="1635241502256" duration="906000" />
       <workItem from="1635242566770" duration="6719000" />
       <workItem from="1635249809795" duration="2813000" />
-      <workItem from="1635406400841" duration="3745000" />
+      <workItem from="1635406400841" duration="4351000" />
     </task>
     <servers />
   </component>
