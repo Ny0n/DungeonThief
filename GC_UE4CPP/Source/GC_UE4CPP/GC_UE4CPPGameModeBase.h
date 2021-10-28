@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Props/ActorReferencer.h"
 #include "UI/InterfaceCreation.h"
 #include "GC_UE4CPPGameModeBase.generated.h"
 
@@ -36,6 +37,9 @@ public:
 
 	UPROPERTY()
 	AInterfaceCreation* HUDBase;
+	
+	UPROPERTY()
+	AActorReferencer* ActorReferencer;
 
 	void Victory();
 	void Defeat();

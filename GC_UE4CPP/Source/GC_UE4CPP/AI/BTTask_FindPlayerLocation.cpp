@@ -21,6 +21,7 @@ EBTNodeResult::Type UBTTask_FindPlayerLocation::ExecuteTask(UBehaviorTreeCompone
 
 	// Set the location to the blackboard key to communicate to the BT
 	Controller->GetBlackboardComponent()->SetValueAsVector(BBKeys::PlayerLocation, Player->GetActorLocation());
+	Controller->GetBlackboardComponent()->SetValueAsRotator(BBKeys::PlayerRotation, Player->GetActorRotation());
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return Super::ExecuteTask(OwnerComp, NodeMemory);

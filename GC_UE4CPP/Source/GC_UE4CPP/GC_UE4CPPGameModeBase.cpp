@@ -3,29 +3,25 @@
 
 #include "GC_UE4CPPGameModeBase.h"
 #include "GameFramework/HUD.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/GC_UE4CPP/Characters/MainCharacter/BP_MainCharacter"));
-	if (IsValid(PlayerPawnBPClass.Class))
-	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
-	}
-
-	static ConstructorHelpers::FClassFinder<AHUD> MainHUDBPClass(TEXT("/Game/GC_UE4CPP/UI/HUD/BP_InterfaceCreation"));
-	if (IsValid(MainHUDBPClass.Class))
-	{
-		HUDClass = MainHUDBPClass.Class;
-	}
+	
 }
 
 void AGC_UE4CPPGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	TArray<AActor*> OutActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActorReferencer::StaticClass(), OutActors);
+	ActorReferencer = Cast<AActorReferencer>(OutActors[0]);
 
 	HUDBase = Cast<AInterfaceCreation>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	HUDBase->InitWidgets();
+	
 	Play();
 }
 

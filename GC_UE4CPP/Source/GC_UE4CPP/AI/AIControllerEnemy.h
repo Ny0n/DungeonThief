@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "AIControllerEnemy.generated.h"
+
+UENUM(BlueprintType)
+enum class EChaseStatus : uint8 { Patrolling, Searching, Chasing };
 
 /**
  * 
@@ -18,6 +22,9 @@ class GC_UE4CPP_API AAIControllerEnemy : public AAIController
 public:
 	AAIControllerEnemy();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	AGC_UE4CPPGameModeBase* GameModeBase;
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BTAsset;
@@ -25,7 +32,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAIPerceptionComponent* AIPerception;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY()
 	UAISenseConfig_Sight* SightConfig;
 	
 private:

@@ -16,9 +16,24 @@ AAIControllerEnemy::AAIControllerEnemy()
 void AAIControllerEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	if (BTAsset != nullptr)
 		RunBehaviorTree(BTAsset);
+
+	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+	if (IsValid(GameModeBase->ActorReferencer))
+	{
+		if (IsValid(GameModeBase->ActorReferencer->EditDoor))
+			Blackboard->SetValueAsVector(BBKeys::ExitDoorLocation, GameModeBase->ActorReferencer->EditDoor->GetActorLocation());
+	}
+}
+
+void AAIControllerEnemy::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (GameModeBase->bVictory || GameModeBase->bDefeat)
+		Blackboard->SetValueAsBool(BBKeys::StopLogic, true);
 }
 
 void AAIControllerEnemy::OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus)

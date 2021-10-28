@@ -76,6 +76,11 @@ void AMainCharacter::Tick(float DeltaTime)
 	ForwardVector = Camera->GetForwardVector();
 	End = ((ForwardVector * 200.f) + Start);
 
+	if (!GameModeBase->bPlaying)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+		PrimaryActorTick.bCanEverTick = false;
+	}
 }
 
 // Called to bind functionality to input
