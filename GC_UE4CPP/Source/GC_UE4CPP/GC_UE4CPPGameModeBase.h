@@ -53,6 +53,8 @@ public:
 	
 	int ActiveAI = 0;
 	int FoodNb = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxFoodInGame = 5;
 	void InitAI();
 	void SpawnAI();
 	void RemoveAI();

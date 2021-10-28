@@ -12,4 +12,5 @@ namespace BBKeys
 	TCHAR constexpr* const IsCarrying = TEXT("IsCarrying");
 	TCHAR constexpr* const FoodSpot = TEXT("FoodSpot");
 	TCHAR constexpr* const FoodSpotIndex = TEXT("FoodSpotIndex");
+	TCHAR constexpr* const DroppedFood = TEXT("DroppedFood");
 }

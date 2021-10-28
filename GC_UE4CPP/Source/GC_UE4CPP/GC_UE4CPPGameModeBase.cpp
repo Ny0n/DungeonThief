@@ -63,6 +63,9 @@ void AGC_UE4CPPGameModeBase::SpawnRandomFood()
 		FoodActor->SetActorLocation(TargetSpot->GetSpotFoodLocation() + FVector(0,0,10));
 		FoodActor->SetActorScale3D(FVector(0.75,0.75,0.75));
 		FoodActor->SetActorRotation(FRotator(0,0,0));
+		
+		// one new food
+		FoodNb = FoodNb + 1;
 	}
 }
 
@@ -74,7 +77,7 @@ void AGC_UE4CPPGameModeBase::SpawnAI()
 	FRotator Rotator;
 	AAIEnemyCharacter* aiEnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyCharacter, ActorReferencer->EditDoor->GetActorLocation(), Rotator, SpawnParameters);
 
-	if (FoodNb < 5)
+	if (FoodNb < MaxFoodInGame)
 	{
 		aiEnemyCharacter->CreateAndAttachFood();
 		FoodNb = FoodNb + 1;
@@ -133,4 +136,5 @@ void AGC_UE4CPPGameModeBase::AddFood()
 	{
 		Victory();
 	}
+	FoodNb = FoodNb - 1;
 }

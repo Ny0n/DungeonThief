@@ -68,4 +68,20 @@ void AAIEnemyCharacter::DropFoodOnSpot(ASpotFood* TargetSpot) // Put the food on
 	}
 }
 
-
+void AAIEnemyCharacter::DropFood() // Drop the food in the world
+{
+	if (FoodActor != nullptr)
+	{
+		FoodActor->SetIsPickUp(false);
+		FoodActor->MyMesh->SetEnableGravity(true);
+		FoodActor->MyMesh->SetSimulatePhysics(true);
+		FoodActor->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		FoodActor->DetachRootComponentFromParent(true);
+		FoodActor->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
+		FoodActor->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
+		FoodActor->SetActorScale3D(FVector(0.5,0.5,0.5));
+		
+		bCarrying = false;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed*2.0f;
+	}
+}
