@@ -107,6 +107,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 //*********************************** Pick up ***********************************************//
 
+//**************** Overlap ****************//
+
 void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
@@ -146,73 +148,31 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		bTouchSpot = false;
 		CurrentSpotFood = nullptr;
 		if (!IsCarrying())
+		{
+			bTouchItem = false;
 			CurrentItem = nullptr;
+		}
 	}
-	
-}
-
-void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
-{
-	if (CurrentFood != nullptr)
+	if(!IsCarrying())
 	{
-		CurrentFood->MyMesh->SetEnableGravity(false);
-		CurrentFood->MyMesh->SetSimulatePhysics(false);
-		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		CurrentFood->SetIsPickUp(true);
-		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
-		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
-		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+		CurrentItem = Cast<APickUp>(OtherActor);
 	}
-}
-
-void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
-{
-	if (CurrentFood != nullptr)
+	if (CurrentItem != nullptr)
 	{
-		CurrentFood->MyMesh->SetEnableGravity(true);
-		CurrentFood->MyMesh->SetSimulatePhysics(true);
-		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CurrentFood->DetachRootComponentFromParent(true);
-		CurrentFood->SetIsPickUp(false);
-		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
-		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
-		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
+		if (!CurrentItem->GetIsPickUP())
+		{
+			bTouchItem = false;
+		}
 	}
 }
-
-void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
-{
-	CurrentSpot->SetHaveFood(false);
-	CurrentFood->SetIsPickUp(true);
-	CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-	CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
-	CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
-	CurrentFood->SetActorRotation(FRotator(0,-45,0));	
 	
-}
 
-void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Put the food on the spot
-{
-	CurrentFood->DetachRootComponentFromParent(true);
-
-	CurrentSpot->SetHaveFood(true);
-	CurrentFood->SetIsPickUp(false);
-	
-	CurrentFood->MyMesh->SetEnableGravity(false);
-	CurrentFood->MyMesh->SetSimulatePhysics(false);
-	CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
-	CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
-	CurrentFood->SetActorRotation(FRotator(0,0,0));
-	CurrentSpotFood=CurrentSpot;
-}
+//**************** Action press E ****************//
 
 void AMainCharacter::OnAction()
 {
 	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
 	{
-
 		if (IsCarrying() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
 		{
 			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
@@ -222,11 +182,10 @@ void AMainCharacter::OnAction()
 		{
 			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
 			SetIsCarrying(true);
-
 		}
-	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)
+	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)  
 	{
-		if (IsCarrying()) //drop Item
+		if (IsCarrying())                                 // drop Item
 		{
 			ToggleItemDropDown(CurrentItem);
 			SetIsCarrying(false);
@@ -239,8 +198,74 @@ void AMainCharacter::OnAction()
 			SetIsCarrying(true);
 		}
 	}
-	
 }
+
+//**************** Pick up and down ****************//
+
+void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
+{
+	if (CurrentFood != nullptr)
+	{
+		CurrentFood->SetIsPickUp(true);
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+	}
+}
+
+void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
+{
+	if (CurrentFood != nullptr)
+	{
+		CurrentFood->SetIsPickUp(false);
+		CurrentFood->MyMesh->SetEnableGravity(true);
+		CurrentFood->MyMesh->SetSimulatePhysics(true);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		CurrentFood->DetachRootComponentFromParent(true);
+		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
+		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
+		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
+	}
+}
+
+void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
+{
+	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
+	{
+
+		CurrentSpot->SetHaveFood(false);
+		CurrentFood->SetIsPickUp(true);
+		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
+		CurrentFood->SetActorRotation(FRotator(0,-45,0));
+	}
+}
+
+void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Put the food on the spot
+{
+	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
+	{
+		CurrentFood->DetachRootComponentFromParent(true);
+
+		CurrentSpot->SetHaveFood(true);
+		CurrentFood->SetIsPickUp(false);
+	
+		CurrentFood->MyMesh->SetEnableGravity(false);
+		CurrentFood->MyMesh->SetSimulatePhysics(false);
+		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		CurrentFood->SetActorLocation(CurrentSpot->GetSpotFoodLocation() + FVector(0,0,10));
+		CurrentFood->SetActorScale3D(FVector(0.75,0.75,0.75));
+		CurrentFood->SetActorRotation(FRotator(0,0,0));
+		CurrentSpotFood=CurrentSpot;
+	}
+}
+
+
 
 //********************************** MOVE ************************************************//
 
