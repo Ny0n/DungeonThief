@@ -3,8 +3,8 @@
 
 #include "BTTask_RemoveAI.h"
 
-#include "AIControllerEnemy.h"
 #include "GC_UE4CPP/GC_UE4CPPGameModeBase.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
 
 UBTTask_RemoveAI::UBTTask_RemoveAI(const FObjectInitializer& ObjectInitializer)
 {

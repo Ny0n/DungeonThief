@@ -22,12 +22,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	UPROPERTY(EditAnywhere)
-	USkeletalMeshComponent* Enemy;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class APickUp> FoodBP;
-
 	UPROPERTY()
 	APickUp* FoodActor;
 
@@ -35,7 +29,14 @@ public:
 	bool bCarrying = false;
 
 	void CreateAndAttachFood();
+	void PickupFood(APickUp* Food);
 	void DropFoodOnSpot(ASpotFood* TargetSpot);
 	void DropFood();
-	void PickupFood(APickUp* Food);
+
+private:
+	UPROPERTY(EditAnywhere)
+	USkeletalMeshComponent* Enemy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	TSubclassOf<class APickUp> FoodBP;
 };

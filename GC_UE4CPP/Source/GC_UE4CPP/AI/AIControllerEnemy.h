@@ -24,18 +24,19 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	AGC_UE4CPPGameModeBase* GameModeBase;
-
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BTAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAIPerceptionComponent* AIPerception;
 
+private:
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
+
 	UPROPERTY()
 	UAISenseConfig_Sight* SightConfig;
 	
-private:
 	UFUNCTION()
 	void OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus);
 

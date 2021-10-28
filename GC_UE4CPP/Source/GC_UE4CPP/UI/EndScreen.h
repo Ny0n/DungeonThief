@@ -17,9 +17,6 @@ class GC_UE4CPP_API UEndScreen : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
-	void Restart();
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* VictoryText;
 
@@ -28,5 +25,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UButton* RestartButton;
+	
+private:
+	UFUNCTION()
+	void Restart();
 	
 };

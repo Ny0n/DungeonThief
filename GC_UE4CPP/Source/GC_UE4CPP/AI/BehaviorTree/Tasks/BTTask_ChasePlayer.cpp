@@ -3,10 +3,10 @@
 
 #include "BTTask_ChasePlayer.h"
 
-#include "AIControllerEnemy.h"
-#include "BlackboardKeys.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 
 UBTTask_ChasePlayer::UBTTask_ChasePlayer(const FObjectInitializer& ObjectInitializer)
 {

@@ -10,7 +10,8 @@ void UEndScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	RestartButton->OnClicked.AddDynamic(this, &UEndScreen::Restart);
+	if (RestartButton != nullptr)
+		RestartButton->OnClicked.AddDynamic(this, &UEndScreen::Restart);
 }
 
 void UEndScreen::Restart()

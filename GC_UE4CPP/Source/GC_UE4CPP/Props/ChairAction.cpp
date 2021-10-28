@@ -9,30 +9,30 @@
 AChairAction::AChairAction()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	MyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("My Mesh"));
-	MyMesh -> SetupAttachment(RootComponent);
+	MyMesh->SetupAttachment(RootComponent);
 
 	BoxMesh = CreateDefaultSubobject<UBoxComponent>(TEXT("My Box"));
-	BoxMesh ->SetupAttachment(MyMesh);
+	BoxMesh->SetupAttachment(MyMesh);
 
-	BoxMesh -> SetRelativeScale3D(FVector(2,2,2));
-	BoxMesh -> SetRelativeLocation(FVector(0,0,60));
+	BoxMesh->SetRelativeScale3D(FVector(2,2,2));
+	BoxMesh->SetRelativeLocation(FVector(0,0,60));
 	
 	MyMesh->SetSimulatePhysics(true);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-    Camera -> SetupAttachment(MyMesh);
+    Camera->SetupAttachment(MyMesh);
 }
 
 // Called when the game starts or when spawned
 void AChairAction::BeginPlay()
 {
 	Super::BeginPlay();
-	Camera->SetRelativeLocation(FVector(0,500,300));
-	Camera -> SetRelativeRotation(FRotator(-30,-90,0));
 	
+	Camera->SetRelativeLocation(FVector(0,500,300));
+	Camera->SetRelativeRotation(FRotator(-30,-90,0));
 }
 
 

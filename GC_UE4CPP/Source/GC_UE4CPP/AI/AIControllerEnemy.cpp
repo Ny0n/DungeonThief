@@ -5,7 +5,7 @@
 
 #include "Perception/AIPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "BlackboardKeys.h"
+#include "BehaviorTree/BlackboardKeys.h"
 #include "GC_UE4CPP/MainCharacter/MainCharacter.h"
 
 AAIControllerEnemy::AAIControllerEnemy()
@@ -21,10 +21,13 @@ void AAIControllerEnemy::BeginPlay()
 		RunBehaviorTree(BTAsset);
 
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-	if (IsValid(GameModeBase->ActorReferencer))
+	if (GameModeBase != nullptr)
 	{
-		if (IsValid(GameModeBase->ActorReferencer->EditDoor))
-			Blackboard->SetValueAsVector(BBKeys::ExitDoorLocation, GameModeBase->ActorReferencer->EditDoor->GetActorLocation());
+		if (GameModeBase->ActorReferencer != nullptr)
+		{
+			if (GameModeBase->ActorReferencer->ExitDoor != nullptr)
+				Blackboard->SetValueAsVector(BBKeys::ExitDoorLocation, GameModeBase->ActorReferencer->ExitDoor->GetActorLocation());
+		}
 	}
 
 	Blackboard->SetValueAsInt(BBKeys::FoodSpotIndex, 0); // default value
@@ -34,8 +37,11 @@ void AAIControllerEnemy::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (GameModeBase->bVictory || GameModeBase->bDefeat)
-		Blackboard->SetValueAsBool(BBKeys::StopLogic, true);
+	if (GameModeBase != nullptr)
+	{
+		if (GameModeBase->bVictory || GameModeBase->bDefeat)
+			Blackboard->SetValueAsBool(BBKeys::StopLogic, true);
+	}
 }
 
 void AAIControllerEnemy::OnTargetDetected(AActor* Actor, FAIStimulus const Stimulus)
@@ -56,7 +62,7 @@ void AAIControllerEnemy::SetupPerceptionSystem()
 	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
 	SightConfig->SightRadius = 800.0f;
 	SightConfig->LoseSightRadius = SightConfig->SightRadius + 50.0f;
-	SightConfig->PeripheralVisionAngleDegrees = 90.0f;
+	SightConfig->PeripheralVisionAngleDegrees = 135.0f;
 	SightConfig->SetMaxAge(3.0f);
 	SightConfig->AutoSuccessRangeFromLastSeenLocation = 0.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;

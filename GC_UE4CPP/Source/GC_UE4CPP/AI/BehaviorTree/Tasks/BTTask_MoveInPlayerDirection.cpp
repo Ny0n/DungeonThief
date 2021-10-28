@@ -3,12 +3,11 @@
 
 #include "BTTask_MoveInPlayerDirection.h"
 
-#include "AIControllerEnemy.h"
-#include "AIEnemyCharacter.h"
-#include "BlackboardKeys.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 
 UBTTask_MoveInPlayerDirection::UBTTask_MoveInPlayerDirection(const FObjectInitializer& ObjectInitializer)
 {

@@ -19,19 +19,18 @@ void UKnightAnimation::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
+	// we constantly update the speed for the BS
 	const AActor* OwningActor = GetOwningActor();
-	if (IsValid(OwningActor))
-	{
+	if (OwningActor != nullptr)
 		Speed = OwningActor->GetVelocity().Size();
-	}
 
-	if (IsValid(GameModeBase) && IsValid(MainCharacter))
+	if (GameModeBase != nullptr && MainCharacter != nullptr)
 	{
 		bVictory = GameModeBase->bVictory;
 		bDefeat = GameModeBase->bDefeat;
 		bPlaying = GameModeBase->bPlaying;
 		bCarrying = MainCharacter->bCarrying;
-		bSitting = MainCharacter -> bSitDown;
-		bMove = MainCharacter -> bMove;
+		bSitting = MainCharacter->bSitDown;
+		bMove = MainCharacter->bMove;
 	}
 }

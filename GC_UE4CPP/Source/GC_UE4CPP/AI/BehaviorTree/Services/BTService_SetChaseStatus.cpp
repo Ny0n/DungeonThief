@@ -3,8 +3,8 @@
 
 #include "BTService_SetChaseStatus.h"
 
-#include "BlackboardKeys.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 
 UBTService_SetChaseStatus::UBTService_SetChaseStatus()
 {

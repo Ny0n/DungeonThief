@@ -19,13 +19,12 @@ void UGoblinAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
+	// same as for the knight
 	const AActor* OwningActor = GetOwningActor();
-	if (IsValid(OwningActor))
-	{
+	if (OwningActor != nullptr)
 		Speed = OwningActor->GetVelocity().Size();
-	}
 
-	if (IsValid(GameModeBase) && IsValid(Character))
+	if (GameModeBase != nullptr && Character != nullptr)
 	{
 		bVictory = GameModeBase->bVictory;
 		bDefeat = GameModeBase->bDefeat;

@@ -18,13 +18,13 @@ class GC_UE4CPP_API UFoodProgressBar : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
-	UPROPERTY()
-	AGC_UE4CPPGameModeBase* GameModeBase;
-	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* WidgetFoodProgressBar;
+
+private:
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
 };

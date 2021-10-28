@@ -3,9 +3,8 @@
 
 #include "BTService_ChangeSpeed.h"
 
-#include "AIControllerEnemy.h"
-#include "AIEnemyCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
 
 UBTService_ChangeSpeed::UBTService_ChangeSpeed()
 {
@@ -16,6 +15,7 @@ UBTService_ChangeSpeed::UBTService_ChangeSpeed()
 void UBTService_ChangeSpeed::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
+	
 	AAIControllerEnemy* Controller = Cast<AAIControllerEnemy>(OwnerComp.GetAIOwner());
 	AAIEnemyCharacter* NPC = Cast<AAIEnemyCharacter>(Controller->GetPawn());
 	NPC->GetCharacterMovement()->MaxWalkSpeed = Speed;

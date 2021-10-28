@@ -8,10 +8,9 @@
 
 // Sets default values
 APickUp::APickUp()
-
-
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	
 	MyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("My Mesh"));
 	MyMesh -> SetupAttachment(RootComponent);
 
@@ -22,8 +21,6 @@ APickUp::APickUp()
 	BoxMesh -> SetRelativeLocation(FVector(0,0,0));
 	
 	MyMesh->SetSimulatePhysics(true);
-	//RootComponent = MyMesh;
-
 }
 
 // Called when the game starts or when spawned
@@ -31,11 +28,6 @@ void APickUp::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
-}
-
-void APickUp::PickUp()
-{	
 }
 
 bool APickUp::GetIsPickUP()
@@ -47,4 +39,3 @@ void APickUp::SetIsPickUp(bool BPickUp)
 {
 	IsPickUp = BPickUp;
 }
-

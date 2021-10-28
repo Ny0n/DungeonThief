@@ -14,13 +14,15 @@ UCLASS()
 class GC_UE4CPP_API AHUDMainMenu : public AHUD
 {
 	GENERATED_BODY()
+
+public:
 	AHUDMainMenu();
 	void BeginPlay() override;
 
-private:
-	TSubclassOf<UUserWidget> MenuWBPClass;
-
-public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> MenuWbpClass;
+	
 	UPROPERTY()
 	UMainMenu* BPMenu;
+	
 };

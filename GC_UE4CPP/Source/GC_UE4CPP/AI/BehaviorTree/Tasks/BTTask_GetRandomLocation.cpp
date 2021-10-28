@@ -3,9 +3,9 @@
 
 #include "BTTask_GetRandomLocation.h"
 
-#include "AIControllerEnemy.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
 
 UBTTask_GetRandomLocation::UBTTask_GetRandomLocation(const FObjectInitializer& ObjectInitializer)
 {

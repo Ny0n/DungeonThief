@@ -1,5 +1,4 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
-//		UE_LOG(LogTemp, Warning, TEXT("spotenregistré"));
 
 
 #include "MainCharacter.h"
@@ -21,8 +20,6 @@ AMainCharacter::AMainCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	
-
 	BoomArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera boom"));
 	BoomArm->SetupAttachment(RootComponent);
 	BoomArm->TargetArmLength = 400;
@@ -31,8 +28,6 @@ AMainCharacter::AMainCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(BoomArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
-
-	
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -97,20 +92,15 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Scroll", this, &AMainCharacter::ZoomInOut);
-	
-	
 
 	// Bind action event
 	PlayerInputComponent->BindAction("Action_E", IE_Pressed, this, &AMainCharacter::OnAction);
 
-	// HUD test
+	// HUD trigger example
 	PlayerInputComponent->BindAction("Action_Num1", IE_Pressed, this, &AMainCharacter::Num1Pressed);
 	PlayerInputComponent->BindAction("Action_Num2", IE_Pressed, this, &AMainCharacter::Num2Pressed);
 	PlayerInputComponent->BindAction("Action_Num3", IE_Pressed, this, &AMainCharacter::Num3Pressed);
-
 }
-
-//*********************************** Pick up ***********************************************//
 
 //**************** Overlap ****************//
 
@@ -132,7 +122,7 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	if (!bTouchSpot)
 	{
 		CurrentSpotFood = Cast<ASpotFood>(OtherActor);
-		if(CurrentSpotFood != nullptr)
+		if (CurrentSpotFood != nullptr)
 		{
 			bTouchSpot = true;
 		}
@@ -150,11 +140,9 @@ void AMainCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 		GameModeBase->Defeat();
 	}
 	CurrentChair = Cast<AChairAction>(OtherActor);
-	if(CurrentChair != nullptr)
+	if (CurrentChair != nullptr)
 	{
 		bChair = true;
-		UE_LOG(LogTemp, Warning, TEXT("chair"));
-
 	}	
 }
 
@@ -174,7 +162,7 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 			CurrentItem = nullptr;
 		}
 	}
-	if(!IsCarrying())
+	if (!IsCarrying())
 	{
 		CurrentItem = Cast<APickUp>(OtherActor);
 	}
@@ -186,7 +174,7 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 		}
 	}
 
-	if(IsSitting())
+	if (IsSitting())
 	{
 		CurrentChair = Cast<AChairAction>(OtherActor);
 		if (CurrentChair != nullptr)
@@ -201,52 +189,55 @@ void AMainCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 
 void AMainCharacter::OnAction()
 {
-	if ( CurrentItem != nullptr && CurrentSpotFood !=nullptr )
+	// Pick up
+	if (CurrentItem != nullptr && CurrentSpotFood !=nullptr)
 	{
 		if (IsCarrying() && !CurrentSpotFood->GetHaveFood()) // Put the food on the spot
 		{
 			ToggleItemDropDownSpot(CurrentSpotFood,CurrentItem);
 			SetIsCarrying(false);
-			
-		}else if (!IsCarrying() && CurrentSpotFood->GetHaveFood()) // take the food on the spot
+		}
+		else if (!IsCarrying() && CurrentSpotFood->GetHaveFood()) // Take the food on the spot
 		{
 			ToggleItemPickupSpot(CurrentSpotFood,CurrentItem);
 			SetIsCarrying(true);
 		}
-	}else if (CurrentItem != nullptr && CurrentSpotFood ==nullptr)  
+	}
+	else if (CurrentItem != nullptr && CurrentSpotFood == nullptr)  
 	{
-		if (IsCarrying())                                 // drop Item
+		if (IsCarrying()) // Drop item
 		{
 			ToggleItemDropDown(CurrentItem);
 			SetIsCarrying(false);
 			CurrentItem = nullptr;
 			bTouchItem = false;
 		}
-		else if (bTouchItem && !IsCarrying() && !CurrentItem->GetIsPickUP()) //Pick up item
+		else if (bTouchItem && !IsCarrying() && !CurrentItem->GetIsPickUP()) // Pick up item
 		{
 			ToggleItemPickup(CurrentItem);
 			SetIsCarrying(true);
 		}
 	}
+
+	// Chair feature
 	if (CurrentChair != nullptr)
 	{
 		if (bChair && !IsCarrying() && !IsSitting())
 		{
 			SitDownCharacter();
 			CurrentChair->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		}else if (IsSitting())
+		}
+		else if (IsSitting())
 		{
 			SitUpCharacter();
 			CurrentChair->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 		}
 	}
-	
-	
 }
 
 //**************** Pick up and down ****************//
 
-void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
+void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) // Pick up item
 {
 	if (CurrentFood != nullptr)
 	{
@@ -255,13 +246,13 @@ void AMainCharacter::ToggleItemPickup(APickUp* CurrentFood) //Pick up item
 		CurrentFood->MyMesh->SetSimulatePhysics(false);
 		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorLocation(GetActorLocation() + 40 * GetActorForwardVector() + FVector(0,0,-30));
 		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
 		CurrentFood->SetActorRotation(FRotator(0,-45,0));
 	}
 }
 
-void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
+void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) // Drop item
 {
 	if (CurrentFood != nullptr)
 	{
@@ -269,22 +260,21 @@ void AMainCharacter::ToggleItemDropDown(APickUp* CurrentFood) //drop Item
 		CurrentFood->MyMesh->SetEnableGravity(true);
 		CurrentFood->MyMesh->SetSimulatePhysics(true);
 		CurrentFood->MyMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		CurrentFood->DetachRootComponentFromParent(true);
-		CurrentFood->SetActorLocation(GetActorLocation() +110* GetActorForwardVector()); 
+		CurrentFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		CurrentFood->SetActorLocation(GetActorLocation() + 110 * GetActorForwardVector()); 
 		CurrentFood->SetActorRotation(GetActorRotation()+FRotator(0,0,0));
 		CurrentFood->SetActorScale3D(FVector(0.5,0.5,0.5));
 	}
 }
 
-void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // take the food on the spot
+void AMainCharacter::ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood) // Take the food on the spot
 {
 	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
 	{
-
 		CurrentSpot->SetHaveFood(false);
 		CurrentFood->SetIsPickUp(true);
 		CurrentFood->AttachToComponent(TriggerCapsule, FAttachmentTransformRules::KeepWorldTransform);
-		CurrentFood->SetActorLocation(GetActorLocation() + 40* GetActorForwardVector() + FVector(0,0,-30));
+		CurrentFood->SetActorLocation(GetActorLocation() + 40 * GetActorForwardVector() + FVector(0,0,-30));
 		CurrentFood->SetActorScale3D(FVector(0.25,0.25,0.25));
 		CurrentFood->SetActorRotation(FRotator(0,-45,0));
 	}
@@ -294,7 +284,7 @@ void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* Cur
 {
 	if (CurrentFood != nullptr && CurrentSpot !=nullptr)
 	{
-		CurrentFood->DetachRootComponentFromParent(true);
+		CurrentFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
 		CurrentSpot->SetHaveFood(true);
 		CurrentFood->SetIsPickUp(false);
@@ -313,26 +303,25 @@ void AMainCharacter::ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* Cur
 
 void AMainCharacter::SitDownCharacter()
 {
-	if(CurrentChair != nullptr && !IsSitting())
+	if (CurrentChair != nullptr && !IsSitting())
 	{
-		this -> SetActorLocation( CurrentChair->GetActorLocation()+ FVector(0,50,130) );
-		this -> SetActorRotation( FRotator(0,90,0));
+		this->SetActorLocation(CurrentChair->GetActorLocation() + FVector(0,50,130));
+		this->SetActorRotation(FRotator(0,90,0));
 		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(CurrentChair,1.0f);
 		SetIsSitting(true);
-		
 	}
 }
+
 void AMainCharacter::SitUpCharacter()
 {
-	if(IsSitting())
+	if (IsSitting())
 	{
-		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this,0.5f);
+		GetWorld()->GetFirstPlayerController()->SetViewTargetWithBlend(this, 0.5f);
 		SetIsSitting(false);
 	}
 }
 
 //********************************** MOVE ************************************************//
-
 
 void AMainCharacter::MoveForward(float Value)
 {
@@ -349,7 +338,8 @@ void AMainCharacter::MoveForward(float Value)
 			if (Value == 0)
 			{
 				bMove = true;
-			}else
+			}
+			else
 			{
 				bMove=false;
 			}
@@ -373,7 +363,8 @@ void AMainCharacter::MoveRight(float Value)
 			if (Value == 0)
 			{
 				bMove = true;
-			}else
+			}
+			else
 			{
 				bMove=false;
 			}
@@ -428,6 +419,7 @@ void AMainCharacter::SetIsCarrying(bool Value)
 {
 	bCarrying = Value;
 }
+
 bool AMainCharacter::IsSitting()
 {
 	return bSitDown;

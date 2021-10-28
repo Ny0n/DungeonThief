@@ -15,13 +15,7 @@ class GC_UE4CPP_API UMainMenu : public UUserWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeConstruct() override;
-
-	UFUNCTION()
-	void StartPlaying();
-
-	UFUNCTION()
-	void QuitGame();
-
+	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* NameText;
 
@@ -30,4 +24,12 @@ public:
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UButton* ExitButton;
+
+private:
+	UFUNCTION()
+	void StartPlaying();
+
+	UFUNCTION()
+	void QuitGame();
+	
 };

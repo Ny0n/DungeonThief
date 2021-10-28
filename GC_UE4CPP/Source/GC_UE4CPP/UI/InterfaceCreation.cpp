@@ -7,19 +7,7 @@
 
 AInterfaceCreation::AInterfaceCreation()
 {
-	// HUD food bar
-	static ConstructorHelpers::FClassFinder<UUserWidget> UFoodProgressBarBPClass(TEXT("/Game/GC_UE4CPP/UI/HUD/WBP_FoodProgressBar"));
-	if (IsValid(UFoodProgressBarBPClass.Class))
-	{
-		BarWBPClass = UFoodProgressBarBPClass.Class;
-	}
-
-	// HUD end screen
-	static ConstructorHelpers::FClassFinder<UUserWidget> UEndScreenBPClass(TEXT("/Game/GC_UE4CPP/UI/HUD/WBP_EndScreen"));
-	if (IsValid(UEndScreenBPClass.Class))
-	{
-		EndScreenWBPClass = UEndScreenBPClass.Class;
-	}
+	
 }
 
 void AInterfaceCreation::BeginPlay()
@@ -35,47 +23,47 @@ void AInterfaceCreation::Tick(float DeltaSeconds)
 
 void AInterfaceCreation::InitWidgets()
 {
-	if (IsValid(BarWBPClass))
+	if (IsValid(BarWbpClass))
 	{
-		BarWBP = CreateWidget<UFoodProgressBar>(GetWorld(), BarWBPClass);
+		BarWbp = CreateWidget<UFoodProgressBar>(GetWorld(), BarWbpClass);
 	}
 
-	if (IsValid(EndScreenWBPClass))
+	if (IsValid(EndScreenWbpClass))
 	{
-		EndScreenWBP = CreateWidget<UEndScreen>(GetWorld(), EndScreenWBPClass);
+		EndScreenWbp = CreateWidget<UEndScreen>(GetWorld(), EndScreenWbpClass);
 	}
 }
 
 void AInterfaceCreation::ShowPlayHUD()
 {
-	BarWBP->AddToViewport();
-	EndScreenWBP->RemoveFromParent();
+	BarWbp->AddToViewport();
+	EndScreenWbp->RemoveFromParent();
 	
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
 	
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (PC)
+	if (PC != nullptr)
 		PC->bShowMouseCursor = false;
 }
 
 void AInterfaceCreation::ShowEndHUD(bool bVictory)
 {
-	BarWBP->RemoveFromParent();
-	EndScreenWBP->AddToViewport();
+	BarWbp->RemoveFromParent();
+	EndScreenWbp->AddToViewport();
 	
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (PC)
+	if (PC != nullptr)
 		PC->bShowMouseCursor = true;
 
 	// we show the right end text
 	
-	EndScreenWBP->VictoryText->SetVisibility(ESlateVisibility::Hidden);
-	EndScreenWBP->DefeatText->SetVisibility(ESlateVisibility::Hidden);
+	EndScreenWbp->VictoryText->SetVisibility(ESlateVisibility::Hidden);
+	EndScreenWbp->DefeatText->SetVisibility(ESlateVisibility::Hidden);
 
 	if (bVictory)
-		EndScreenWBP->VictoryText->SetVisibility(ESlateVisibility::Visible);
+		EndScreenWbp->VictoryText->SetVisibility(ESlateVisibility::Visible);
 	else
-		EndScreenWBP->DefeatText->SetVisibility(ESlateVisibility::Visible);
+		EndScreenWbp->DefeatText->SetVisibility(ESlateVisibility::Visible);
 }

@@ -21,6 +21,8 @@ public:
 	AGC_UE4CPPGameModeBase();
 	virtual void BeginPlay() override;
 
+	// Game state
+	
 	UPROPERTY(BlueprintReadOnly)
 	bool bVictory;
 	
@@ -36,31 +38,37 @@ public:
 	UPROPERTY(EditAnywhere)
 	float FoodCurrentQuantity = 0.0;
 
-	UPROPERTY()
-	AInterfaceCreation* HUDBase;
-
 	void Victory();
 	void Defeat();
 	void Play();
 	void AddFood();
 
-	// IA MANAGEMENT
+	// IA Management
+	
 	UPROPERTY()
 	AActorReferencer* ActorReferencer;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class AAIEnemyCharacter> EnemyCharacter;
+	int MaxFoodInGame = 5;
+
+	void RemoveAI();
+
+private:
+	UPROPERTY()
+	AInterfaceCreation* HUDBase;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	TSubclassOf<class AAIEnemyCharacter> EnemyCharacter;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess))
+	TSubclassOf<class APickUp> FoodBP;
+
 	int ActiveAI = 0;
 	int FoodNb = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int MaxFoodInGame = 5;
+	
+	void DropPlayerFood();
 	void InitAI();
 	void SpawnAI();
-	void RemoveAI();
 	void SpawnAIWithDelay(float Delay);
-	
 	void SpawnRandomFood();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class APickUp> FoodBP;
 };

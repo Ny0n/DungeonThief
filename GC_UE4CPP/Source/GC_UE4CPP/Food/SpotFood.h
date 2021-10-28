@@ -30,7 +30,6 @@ public:
 	UPROPERTY(EditAnywhere , BlueprintReadWrite)
 	UBoxComponent* BoxPutFood;
 	
-	
 	UFUNCTION()
 	bool GetHaveFood();
 	
@@ -43,11 +42,12 @@ public:
 	UFUNCTION()
 	FRotator GetSpotFoodRotation();
 	
-	
 private:
+	bool HaveFood = false;
+	
 	FVector BoxLocation;
 	FRotator BoxRotation;
 	FVector Location;
 	FRotator Rotation;
-	bool HaveFood = false;
+	
 };

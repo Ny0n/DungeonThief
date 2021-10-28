@@ -7,28 +7,21 @@
 AHUDMainMenu::AHUDMainMenu()
 {
 	
-	static ConstructorHelpers::FClassFinder<UUserWidget> UFoodProgressBarBPClass(TEXT("/Game/GC_UE4CPP/UI/MainMenu/WBP_MainMenu"));
-	if (IsValid(UFoodProgressBarBPClass.Class))
-	{
-		MenuWBPClass = UFoodProgressBarBPClass.Class;
-	}
-	
 }
 
 void AHUDMainMenu::BeginPlay()
 {
 	Super::BeginPlay();
-	if (IsValid(MenuWBPClass))
+	
+	if (IsValid(MenuWbpClass))
 	{
-		BPMenu = CreateWidget<UMainMenu>(GetWorld(), MenuWBPClass);
+		BPMenu = CreateWidget<UMainMenu>(GetWorld(), MenuWbpClass);
+		BPMenu->AddToViewport();
 	}
 
-	BPMenu->AddToViewport();
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	if (PC)
+	if (PC != nullptr)
 		PC->bShowMouseCursor = true;
-	//UWidgetBlueprintLibrary::SetInputMode_UIOnly()
-
 }
 
 

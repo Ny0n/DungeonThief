@@ -23,26 +23,19 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-
-
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* MyMesh;
+	UStaticMeshComponent* MyMesh;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	 UBoxComponent* BoxMesh;
-	
-	
+	UBoxComponent* BoxMesh;
 
 	UFUNCTION()
-		void PickUp();
+	bool GetIsPickUP();
 
+	UFUNCTION()
+	void SetIsPickUp(bool BPickUp);
+	
+private:
 	bool IsPickUp = false;
-
-	UFUNCTION()
-		bool GetIsPickUP();
-
-	UFUNCTION()
-		void SetIsPickUp(bool BPickUp);
 	
-
 };

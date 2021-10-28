@@ -16,14 +16,10 @@ class GC_UE4CPP_API UKnightAnimation : public UAnimInstance
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	AGC_UE4CPPGameModeBase* GameModeBase;
-	
-	UPROPERTY()
-	AMainCharacter* MainCharacter;
-
 public:
 	UKnightAnimation();
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed = 0.0;
@@ -45,7 +41,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bMove = false;
+
+private:
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
 	
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	UPROPERTY()
+	AMainCharacter* MainCharacter;
+	
 };

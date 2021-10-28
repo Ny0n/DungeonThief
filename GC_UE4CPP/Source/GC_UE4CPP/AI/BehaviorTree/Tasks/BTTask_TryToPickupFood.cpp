@@ -3,9 +3,9 @@
 
 #include "BTTask_TryToPickupFood.h"
 
-#include "AIControllerEnemy.h"
-#include "BlackboardKeys.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 
 UBTTask_TryToPickupFood::UBTTask_TryToPickupFood(const FObjectInitializer& ObjectInitializer)
 {

@@ -20,20 +20,22 @@ public:
 	AInterfaceCreation();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> BarWbpClass;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UUserWidget> EndScreenWbpClass;
 	
 	void InitWidgets();
-
 	void ShowPlayHUD();
 	void ShowEndHUD(bool bVictory);
 	
 private:
-	TSubclassOf<UUserWidget> BarWBPClass;
-	TSubclassOf<UUserWidget> EndScreenWBPClass;
-
-public:
 	UPROPERTY()
-    UFoodProgressBar* BarWBP;
+	UFoodProgressBar* BarWbp;
 
 	UPROPERTY()
-    UEndScreen* EndScreenWBP;
+	UEndScreen* EndScreenWbp;
+	
 };

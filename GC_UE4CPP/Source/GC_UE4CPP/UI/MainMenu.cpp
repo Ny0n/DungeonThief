@@ -9,19 +9,18 @@ void UMainMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	PlayButton->OnClicked.AddDynamic(this, &UMainMenu::StartPlaying);
-	ExitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
+	if (PlayButton != nullptr)
+		PlayButton->OnClicked.AddDynamic(this, &UMainMenu::StartPlaying);
+	if (ExitButton != nullptr)
+		ExitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitGame);
 }
 
 void UMainMenu::StartPlaying()
 {
-	UGameplayStatics::OpenLevel(GetWorld(),"niveau");
+	UGameplayStatics::OpenLevel(GetWorld(), "niveau");
 }
 
 void UMainMenu::QuitGame()
 {
-	UKismetSystemLibrary::QuitGame(GetWorld(),GetWorld()->GetFirstPlayerController(),EQuitPreference::Quit,false);
-	//FGenericPlatformMisc::RequestExit(false);
-	//UKismetSystemLibrary::QuitGame();
-	//GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
 }

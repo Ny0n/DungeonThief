@@ -18,8 +18,39 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	// Sets default values for this character's properties
+	AMainCharacter();
+
+	// Anim blueprint variables
+	bool bCarrying = false;
+	bool bSitDown = false;
+	bool bMove = false;
+
+	UPROPERTY(EditAnywhere)
+	class APickUp* CurrentItem;
+
+	UPROPERTY(EditAnywhere)
+	class ASpotFood* CurrentSpotFood;
+
+	UPROPERTY(EditAnywhere)
+	class AChairAction* CurrentChair;
+
+	bool IsCarrying();
+	void SetIsCarrying(bool Take);
+	bool IsSitting();
+	void SetIsSitting(bool Take);
+
+	void ToggleItemDropDown(APickUp* CurrentFood); // public so that the GameModeBase can access it
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* BoomArm;
+	class USpringArmComponent* BoomArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camera;
@@ -34,21 +65,7 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 	float ZoomRate = 25;
 
 	UPROPERTY(VisibleAnywhere, Category = "Trigger Capsule")
-		class UCapsuleComponent* TriggerCapsule;
-
-	UFUNCTION()
-		void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex,
-			bool bFromSweep,
-			const FHitResult& SweepResult);
-
-	UFUNCTION()
-		void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex);
+	class UCapsuleComponent* TriggerCapsule;
 
 	UPROPERTY()
 	AGC_UE4CPPGameModeBase* GameModeBase;
@@ -56,31 +73,25 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 	UPROPERTY()
 	AInterfaceCreation* HUDBase;
 
-public:
-	// Sets default values for this character's properties
-	AMainCharacter();
+	UPROPERTY()
+	UAIPerceptionStimuliSourceComponent* StimulusComponent; // AI detection
 
+	// Called to bind functionality to input
+
+	bool bTouchItem = false;
+	bool bTouchSpot = false;
+	bool bChair = false;
+	
+	FVector HoldingComp;
+	FVector Start;
+	FVector ForwardVector;
+	FVector End;
+
+	// input action functions
 	void Num1Pressed();
 	void Num2Pressed();
 	void Num3Pressed();
-
-	bool IsCarrying();
-	void SetIsCarrying(bool Take);
-	bool IsSitting();
-	void SetIsSitting(bool Take);
-
-	void SitDownCharacter();
-	void SitUpCharacter();
-
-	void ToggleItemDropDown(APickUp* CurrentFood);
 	
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	float horizontal = FInputAxisBinding("Horizontal_Axis").AxisValue;
-
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
 	void OnAction();
 
 	void MoveForward(float Value);
@@ -90,48 +101,28 @@ protected:
 	void LookUpAtRate(float Rate);
 	void ZoomInOut(float Value);
 
+	// toggle chair
+	void SitDownCharacter();
+	void SitUpCharacter();
+
 	// toggle holding item pickup
 	void ToggleItemPickup(APickUp* CurrentFood);
-	
 	void ToggleItemPickupSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
-
 	void ToggleItemDropDownSpot(ASpotFood* CurrentSpot, APickUp* CurrentFood);
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex);
 	
 	void SetupStimuli();
-
-public:	
-
-
-	UPROPERTY()
-	UAIPerceptionStimuliSourceComponent* StimulusComponent;
-	
-	// Called to bind functionality to input
-	UPROPERTY(EditAnywhere)
-	class APickUp* CurrentItem;
-
-	UPROPERTY(EditAnywhere)
-	class ASpotFood* CurrentSpotFood;
-
-	UPROPERTY(EditAnywhere)
-	class AChairAction* CurrentChair;
-
-
-	bool bTouchItem = false;
-	bool bTouchSpot = false;
-	bool bCarrying = false;
-	bool bSitDown = false;
-	bool bChair = false;
-	bool bMove = false;
-	
-	
-	FVector HoldingComp;
-
-	FVector Start;
-	FVector ForwardVector;
-	FVector End;
 };

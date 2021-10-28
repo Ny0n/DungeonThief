@@ -3,9 +3,9 @@
 
 #include "BTTask_FindNextFoodSpot.h"
 
-#include "AIControllerEnemy.h"
-#include "BlackboardKeys.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 #include "Kismet/KismetArrayLibrary.h"
 
 UBTTask_FindNextFoodSpot::UBTTask_FindNextFoodSpot(const FObjectInitializer& ObjectInitializer)
@@ -16,8 +16,8 @@ UBTTask_FindNextFoodSpot::UBTTask_FindNextFoodSpot(const FObjectInitializer& Obj
 EBTNodeResult::Type UBTTask_FindNextFoodSpot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIControllerEnemy* Controller = Cast<AAIControllerEnemy>(OwnerComp.GetAIOwner());
-
 	AGC_UE4CPPGameModeBase* GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+
 	TArray<AActor*> FoodSpots = GameModeBase->ActorReferencer->FoodSpots;
 	for (AActor* Spot : FoodSpots)
 	{

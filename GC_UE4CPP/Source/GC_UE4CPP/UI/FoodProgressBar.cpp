@@ -11,12 +11,14 @@ void UFoodProgressBar::NativeConstruct()
 	Super::NativeConstruct();
 
 	GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-	WidgetFoodProgressBar->SetPercent(0);
+	if (WidgetFoodProgressBar != nullptr)
+		WidgetFoodProgressBar->SetPercent(0);
 }
 
 void UFoodProgressBar::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	
-	WidgetFoodProgressBar->SetPercent(GameModeBase->FoodCurrentQuantity/GameModeBase->FoodMaxQuantity);
+
+	if (GameModeBase != nullptr && WidgetFoodProgressBar != nullptr)
+		WidgetFoodProgressBar->SetPercent(GameModeBase->FoodCurrentQuantity/GameModeBase->FoodMaxQuantity);
 }

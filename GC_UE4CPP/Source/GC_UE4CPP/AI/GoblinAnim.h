@@ -15,15 +15,11 @@ UCLASS()
 class GC_UE4CPP_API UGoblinAnim : public UAnimInstance
 {
 	GENERATED_BODY()
-	
-	UPROPERTY()
-	AGC_UE4CPPGameModeBase* GameModeBase;
-	
-	UPROPERTY()
-	AAIEnemyCharacter* Character;
 
 public:
 	UGoblinAnim();
+	virtual void NativeInitializeAnimation() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed = 0.0;
@@ -39,7 +35,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCarrying = false;
+
+private:
+	UPROPERTY()
+	AGC_UE4CPPGameModeBase* GameModeBase;
 	
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	UPROPERTY()
+	AAIEnemyCharacter* Character;
+	
 };

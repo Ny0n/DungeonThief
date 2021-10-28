@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIControllerEnemy.h"
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
-#include "Engine/UserDefinedEnum.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
 #include "BTService_SetChaseStatus.generated.h"
 
 /**

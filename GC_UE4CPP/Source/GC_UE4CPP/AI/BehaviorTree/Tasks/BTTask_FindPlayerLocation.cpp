@@ -3,10 +3,10 @@
 
 #include "BTTask_FindPlayerLocation.h"
 
-#include "AIControllerEnemy.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GC_UE4CPP/MainCharacter/MainCharacter.h"
-#include "BlackboardKeys.h"
+#include "GC_UE4CPP/AI/AIControllerEnemy.h"
+#include "GC_UE4CPP/AI/BehaviorTree/BlackboardKeys.h"
 #include "Kismet/GameplayStatics.h"
 
 UBTTask_FindPlayerLocation::UBTTask_FindPlayerLocation(const FObjectInitializer& ObjectInitializer)
