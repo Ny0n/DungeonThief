@@ -21,6 +21,7 @@ EBTNodeResult::Type UBTTask_FindNextFoodSpot::ExecuteTask(UBehaviorTreeComponent
 	TArray<AActor*> FoodSpots = GameModeBase->ActorReferencer->FoodSpots;
 	int Length = FoodSpots.Num();
 	int CurrentIndex = Controller->GetBlackboardComponent()->GetValueAsInt(BBKeys::FoodSpotIndex);
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Blue, FString::FromInt(CurrentIndex));
 
 	int NextIndex = CurrentIndex+1;
 	if (NextIndex == Length)

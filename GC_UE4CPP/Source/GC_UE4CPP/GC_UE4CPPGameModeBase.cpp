@@ -33,7 +33,7 @@ void AGC_UE4CPPGameModeBase::InitAI()
 	// SpawnAIWithDelay(1);
 
 	// one more after a minute
-	SpawnAIWithDelay(60.0f);
+	// SpawnAIWithDelay(60.0f);
 }
 
 void AGC_UE4CPPGameModeBase::SpawnAI()
