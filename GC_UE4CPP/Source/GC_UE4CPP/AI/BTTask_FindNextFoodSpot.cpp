@@ -19,19 +19,30 @@ EBTNodeResult::Type UBTTask_FindNextFoodSpot::ExecuteTask(UBehaviorTreeComponent
 
 	AGC_UE4CPPGameModeBase* GameModeBase = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	TArray<AActor*> FoodSpots = GameModeBase->ActorReferencer->FoodSpots;
-	int Length = FoodSpots.Num();
-	int CurrentIndex = Controller->GetBlackboardComponent()->GetValueAsInt(BBKeys::FoodSpotIndex);
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Blue, FString::FromInt(CurrentIndex));
-
-	int NextIndex = CurrentIndex+1;
-	if (NextIndex == Length)
+	for (AActor* Spot : FoodSpots)
 	{
-		NextIndex = 0;
+		ASpotFood* FoodSpot = Cast<ASpotFood>(Spot);
+		if (!FoodSpot->GetHaveFood())
+		{
+			// Set the BB values
+			Controller->GetBlackboardComponent()->SetValueAsObject(BBKeys::FoodSpot, FoodSpot);
+		}
 	}
 
-	// Set the BB values
-	Controller->GetBlackboardComponent()->SetValueAsObject(BBKeys::FoodSpot, FoodSpots[CurrentIndex]);
-	Controller->GetBlackboardComponent()->SetValueAsInt(BBKeys::FoodSpotIndex, NextIndex); // go to next spot
+	// NEXT FOOD SPOT CODE
+	// int Length = FoodSpots.Num();
+	// int CurrentIndex = Controller->GetBlackboardComponent()->GetValueAsInt(BBKeys::FoodSpotIndex);
+	// GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Blue, FString::FromInt(CurrentIndex));
+	//
+	// int NextIndex = CurrentIndex+1;
+	// if (NextIndex == Length)
+	// {
+	// 	NextIndex = 0;
+	// }
+	//
+	// // Set the BB values
+	// Controller->GetBlackboardComponent()->SetValueAsObject(BBKeys::FoodSpot, FoodSpots[CurrentIndex]);
+	// Controller->GetBlackboardComponent()->SetValueAsInt(BBKeys::FoodSpotIndex, NextIndex); // go to next spot
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return Super::ExecuteTask(OwnerComp, NodeMemory);

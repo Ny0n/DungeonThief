@@ -20,9 +20,11 @@ void AGC_UE4CPPGameModeBase::BeginPlay()
 	ActorReferencer = Cast<AActorReferencer>(OutActors[0]);
 
 	HUDBase = Cast<AInterfaceCreation>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	HUDBase->InitWidgets();
+	if (HUDBase != nullptr)
+		HUDBase->InitWidgets();
 	
 	Play();
+	SpawnRandomFood();
 	InitAI();
 }
 
@@ -30,10 +32,38 @@ void AGC_UE4CPPGameModeBase::InitAI()
 {
 	// 2 initial AI
 	SpawnAI();
-	// SpawnAIWithDelay(1);
+	SpawnAIWithDelay(1);
 
 	// one more after a minute
-	// SpawnAIWithDelay(60.0f);
+	SpawnAIWithDelay(60.0f);
+}
+
+void AGC_UE4CPPGameModeBase::SpawnRandomFood()
+{
+	if (FoodBP != nullptr)
+	{
+		// spawn
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.Owner = this;
+		FVector Location = FVector(0, 0, 0);
+		FRotator Rotator;
+		APickUp* FoodActor = GetWorld()->SpawnActor<APickUp>(FoodBP, Location, Rotator, SpawnParameters);
+
+		// find random food spot
+		int Index = UKismetMathLibrary::RandomInteger(ActorReferencer->FoodSpots.Num());
+		ASpotFood* TargetSpot = Cast<ASpotFood>(ActorReferencer->FoodSpots[Index]);
+		
+		// link food to spot
+		FoodActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		TargetSpot->SetHaveFood(true);
+		FoodActor->SetIsPickUp(false);
+		FoodActor->MyMesh->SetEnableGravity(false);
+		FoodActor->MyMesh->SetSimulatePhysics(false);
+		FoodActor->MyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		FoodActor->SetActorLocation(TargetSpot->GetSpotFoodLocation() + FVector(0,0,10));
+		FoodActor->SetActorScale3D(FVector(0.75,0.75,0.75));
+		FoodActor->SetActorRotation(FRotator(0,0,0));
+	}
 }
 
 void AGC_UE4CPPGameModeBase::SpawnAI()

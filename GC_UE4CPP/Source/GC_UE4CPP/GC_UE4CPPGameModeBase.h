@@ -57,4 +57,8 @@ public:
 	void SpawnAI();
 	void RemoveAI();
 	void SpawnAIWithDelay(float Delay);
+	
+	void SpawnRandomFood();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APickUp> FoodBP;
 };
