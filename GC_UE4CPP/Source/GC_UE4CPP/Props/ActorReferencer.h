@@ -26,4 +26,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* EditDoor;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<AActor*> FoodSpots;
 };

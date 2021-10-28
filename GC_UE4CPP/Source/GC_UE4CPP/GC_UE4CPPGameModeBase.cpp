@@ -23,6 +23,50 @@ void AGC_UE4CPPGameModeBase::BeginPlay()
 	HUDBase->InitWidgets();
 	
 	Play();
+	InitAI();
+}
+
+void AGC_UE4CPPGameModeBase::InitAI()
+{
+	// 2 initial AI
+	SpawnAI();
+	// SpawnAIWithDelay(1);
+
+	// one more after a minute
+	SpawnAIWithDelay(60.0f);
+}
+
+void AGC_UE4CPPGameModeBase::SpawnAI()
+{
+	ActiveAI = ActiveAI + 1;
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	FRotator Rotator;
+	AAIEnemyCharacter* aiEnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyCharacter, ActorReferencer->EditDoor->GetActorLocation(), Rotator, SpawnParameters);
+
+	if (FoodNb < 5)
+	{
+		aiEnemyCharacter->CreateAndAttachFood();
+		FoodNb = FoodNb + 1;
+	}
+}
+
+void AGC_UE4CPPGameModeBase::SpawnAIWithDelay(float Delay)
+{
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AGC_UE4CPPGameModeBase::SpawnAI, Delay, false);
+}
+
+void AGC_UE4CPPGameModeBase::RemoveAI()
+{
+	ActiveAI = ActiveAI - 1;
+	if (ActiveAI <= 0)
+	{
+		SpawnAI();
+	} else
+	{
+		SpawnAIWithDelay(UKismetMathLibrary::RandomFloatInRange(0.0f, 5.0f));
+	}
 }
 
 void AGC_UE4CPPGameModeBase::Victory()

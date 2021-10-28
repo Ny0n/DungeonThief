@@ -26,6 +26,8 @@ void AAIControllerEnemy::BeginPlay()
 		if (IsValid(GameModeBase->ActorReferencer->EditDoor))
 			Blackboard->SetValueAsVector(BBKeys::ExitDoorLocation, GameModeBase->ActorReferencer->EditDoor->GetActorLocation());
 	}
+
+	Blackboard->SetValueAsInt(BBKeys::FoodSpotIndex, 0); // default value
 }
 
 void AAIControllerEnemy::Tick(float DeltaSeconds)

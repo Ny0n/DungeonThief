@@ -30,6 +30,6 @@ void UGoblinAnim::NativeUpdateAnimation(float DeltaSeconds)
 		bVictory = GameModeBase->bVictory;
 		bDefeat = GameModeBase->bDefeat;
 		bPlaying = GameModeBase->bPlaying;
-		// bCarrying = Character->bCarrying;
+		bCarrying = Character->bCarrying;
 	}
 }

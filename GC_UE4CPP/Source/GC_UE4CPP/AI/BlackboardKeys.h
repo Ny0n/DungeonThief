@@ -9,4 +9,7 @@ namespace BBKeys
 	TCHAR constexpr* const ChaseStatus = TEXT("ChaseStatus");
 	TCHAR constexpr* const ExitDoorLocation = TEXT("ExitDoorLocation");
 	TCHAR constexpr* const StopLogic = TEXT("StopLogic");
+	TCHAR constexpr* const IsCarrying = TEXT("IsCarrying");
+	TCHAR constexpr* const FoodSpot = TEXT("FoodSpot");
+	TCHAR constexpr* const FoodSpotIndex = TEXT("FoodSpotIndex");
 }

@@ -24,7 +24,7 @@ class GC_UE4CPP_API AMainCharacter : public ACharacter
 		class UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere)
-	float CameraTurnRate = 45;
+	float CameraTurnRate = 5;
 
 	UPROPERTY(EditAnywhere)
 	float ZoomRate = 25;

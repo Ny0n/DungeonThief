@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GC_UE4CPP/Food/PickUp.h"
+#include "GC_UE4CPP/Food/SpotFood.h"
 #include "AIEnemyCharacter.generated.h"
 
 UCLASS()
@@ -22,4 +24,16 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* Enemy;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class APickUp> FoodBP;
+
+	UPROPERTY()
+	APickUp* FoodActor;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool bCarrying = false;
+
+	void CreateAndAttachFood();
+	void DropFoodOnSpot(ASpotFood* TargetSpot);
 };

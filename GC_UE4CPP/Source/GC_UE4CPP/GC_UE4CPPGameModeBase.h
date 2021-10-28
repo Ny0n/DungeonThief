@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AI/AIEnemyCharacter.h"
 #include "GameFramework/GameModeBase.h"
 #include "Props/ActorReferencer.h"
 #include "UI/InterfaceCreation.h"
@@ -37,12 +38,23 @@ public:
 
 	UPROPERTY()
 	AInterfaceCreation* HUDBase;
-	
-	UPROPERTY()
-	AActorReferencer* ActorReferencer;
 
 	void Victory();
 	void Defeat();
 	void Play();
 	void AddFood();
+
+	// IA MANAGEMENT
+	UPROPERTY()
+	AActorReferencer* ActorReferencer;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class AAIEnemyCharacter> EnemyCharacter;
+	
+	int ActiveAI = 0;
+	int FoodNb = 0;
+	void InitAI();
+	void SpawnAI();
+	void RemoveAI();
+	void SpawnAIWithDelay(float Delay);
 };
