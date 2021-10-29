@@ -43,7 +43,7 @@ void AAIEnemyCharacter::CreateAndAttachFood() //Pick up item
 		FoodActor->SetActorRotation(FRotator(0,-45,0));
 		
 		bCarrying = true;
-		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed/2.0f;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	}
 }
 
@@ -64,7 +64,7 @@ void AAIEnemyCharacter::DropFoodOnSpot(ASpotFood* TargetSpot) // Put the food on
 		FoodActor->SetActorRotation(FRotator(0,0,0));
 
 		bCarrying = false;
-		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed*2.0f;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	}
 }
 
@@ -82,7 +82,7 @@ void AAIEnemyCharacter::DropFood() // Drop the food in the world
 		FoodActor->SetActorScale3D(FVector(0.5,0.5,0.5));
 		
 		bCarrying = false;
-		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed*2.0f;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	}
 }
 
