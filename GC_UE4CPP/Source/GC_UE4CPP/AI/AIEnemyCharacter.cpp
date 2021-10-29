@@ -101,6 +101,6 @@ void AAIEnemyCharacter::PickupFood(APickUp* Food) //Pick up item
 		FoodActor->SetActorRotation(FRotator(0,-45,0));
 		
 		bCarrying = true;
-		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed/2.0f;
+		GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	}
 }
