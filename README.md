@@ -1,5 +1,5 @@
-# Dungeon Thief
-3D Infiltration game made on Unreal Engine 4.
+# Dungeon Thief - Unreal Engine 4 Project
+3D Infiltration game.
  
 ## Context
 This game has been made for educational purposes during the first year of the Msc Video Game programming in Gaming Campus with the supervision of Etienne CHAMPAGNE.
