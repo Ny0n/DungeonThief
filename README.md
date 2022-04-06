@@ -11,7 +11,7 @@ Learn and develop with UE4 using only C++ (no blueprints).
 Unreal Engine 4  
 C++
 
-#### Group
+#### Team
 Flavien MERITTO (me)  
 Fabien MOGADE  
 Adrien CROSNIER
